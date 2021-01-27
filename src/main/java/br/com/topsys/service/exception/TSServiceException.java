@@ -62,7 +62,7 @@ public class TSServiceException {
 	public ResponseEntity<Object> handleException(EmptyResultDataAccessException ex) {
 		
 		return new ResponseEntity<Object>(
-				new TSResponseExceptionModel(HttpStatus.OK.value(), new Date(), "Nâo retornou nenhum registro!"),
+				new TSResponseExceptionModel(HttpStatus.OK.value(), new Date(), "Não retornou nenhum registro!"),
 				HttpStatus.OK); 
 
 	}
