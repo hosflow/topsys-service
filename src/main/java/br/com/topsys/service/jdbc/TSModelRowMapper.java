@@ -11,29 +11,30 @@ import org.springframework.jdbc.core.RowMapper;
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	private String[] parametros;
-	private T classe;
+	private Class<T> classe;
 	private BeanWrapper wrapper;
 
 	public TSModelRowMapper(Class<T> classe, String... parametros) {
-		this.classe = BeanUtils.instantiateClass(classe);
-		wrapper = PropertyAccessorFactory.forBeanPropertyAccess(this.classe);
-		wrapper.setAutoGrowNestedPaths(true);
+		this.classe = classe;
 		this.parametros = parametros;
 	}
 
 	@Override
 	public T mapRow(ResultSet rs, int rowNum) throws SQLException {
+		T objeto = BeanUtils.instantiateClass(classe);
+		wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
+		wrapper.setAutoGrowNestedPaths(true);
 
 		if (parametros != null) {
 			for (int x = 0; x < parametros.length; x++) {
-				if(wrapper.isWritableProperty(parametros[x])){
+				if (wrapper.isWritableProperty(parametros[x])) {
 					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
 				}
-				
+
 			}
 		}
 
-		return classe;
+		return objeto;
 
 	}
 
