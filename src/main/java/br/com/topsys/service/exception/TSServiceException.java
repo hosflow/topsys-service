@@ -18,7 +18,7 @@ import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
 
-@Component
+
 @RestControllerAdvice 
 public class TSServiceException {	
 
