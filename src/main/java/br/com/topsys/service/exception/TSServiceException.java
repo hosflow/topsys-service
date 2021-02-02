@@ -1,6 +1,5 @@
 package br.com.topsys.service.exception;
 
-import java.net.ConnectException;
 import java.util.Date;
 
 import org.springframework.dao.DataAccessException;
@@ -25,7 +24,7 @@ public class TSServiceException {
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
-	@ExceptionHandler({ NullPointerException.class, TSSystemException.class, DataAccessException.class, ConnectException.class })
+	@ExceptionHandler({ NullPointerException.class, TSSystemException.class, DataAccessException.class })
 	public ResponseEntity<Object> handleException(Exception ex) {
 		
 		log.error(ex.getMessage());
