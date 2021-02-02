@@ -17,8 +17,9 @@ import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @RestControllerAdvice 
 public class TSServiceException {	
 
@@ -26,6 +27,8 @@ public class TSServiceException {
 
 	@ExceptionHandler({ NullPointerException.class, TSSystemException.class, DataAccessException.class, ConnectException.class })
 	public ResponseEntity<Object> handleException(Exception ex) {
+		
+		log.error(ex.getMessage());
 		
 		return new ResponseEntity<Object>(
 				new TSResponseExceptionModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), ERRO_INTERNO),
