@@ -16,7 +16,7 @@ public abstract class TSMainController<T extends Serializable> {
 
 		return new TSRetornoModel<T>(this.getService().obter(model));
 	}
-
+ 
 	@PostMapping(value = "/pesquisar")
 	public TSRetornoModel<T> pesquisar(@RequestBody T model) {
 
