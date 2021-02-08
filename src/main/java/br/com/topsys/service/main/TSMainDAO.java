@@ -3,12 +3,10 @@ package br.com.topsys.service.main;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.service.jdbc.TSJdbcDAO;
 
-@Repository
+
 public abstract class TSMainDAO<T extends Serializable> extends TSJdbcDAO {
 
 	private static final String NAO_IMPLEMENTANDO = "Método não implementando no DAO";

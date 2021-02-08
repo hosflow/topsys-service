@@ -3,9 +3,7 @@ package br.com.topsys.service.main;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
 
-@Service
 public abstract class TSMainService<T extends Serializable> {
 	
 	
