@@ -15,8 +15,9 @@ public abstract class TSJdbcRepository {
 	@Autowired
 	private JdbcTemplate dao;
 
-	public JdbcTemplate getDAO() {
-		return dao;
+	private JdbcTemplate getDAO() {
+		this.dao.setFetchSize(50);
+		return this.dao;
 	}
 
 	protected Long getSequence(String nome) {
@@ -24,7 +25,7 @@ public abstract class TSJdbcRepository {
 		builder.append("SELECT NEXTVAL('");
 		builder.append(nome);
 		builder.append("')");
-		return dao.queryForObject(builder.toString(), Long.class);
+		return getDAO().queryForObject(builder.toString(), Long.class);
 	}
 
 	public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
@@ -38,7 +39,7 @@ public abstract class TSJdbcRepository {
 
 	public int update(String sql, Object... args) throws DataAccessException {
 
-		return this.getDAO().update(sql, args);
+		return this.getDAO(). update(sql, args);
 	}
 
 	public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
