@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.com.topsys.base.exception.TSSystemException;
-import br.com.topsys.service.jdbc.TSJdbcDAO;
+import br.com.topsys.service.jdbc.TSJdbcRepository;
 
 
-public abstract class TSMainDAO<T extends Serializable> extends TSJdbcDAO {
+public abstract class TSMainRepository<T extends Serializable> extends TSJdbcRepository {
 
-	private static final String NAO_IMPLEMENTANDO = "Método não implementando no DAO";
+	private static final String NAO_IMPLEMENTANDO = "Método não implementando no Repository";
 
 	public List<T> pesquisar(T model) {
 		throw new TSSystemException(NAO_IMPLEMENTANDO);

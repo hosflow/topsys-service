@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public abstract class TSJdbcDAO {
+public abstract class TSJdbcRepository {
 
 	@Autowired
 	private JdbcTemplate dao;

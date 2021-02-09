@@ -3,32 +3,45 @@ package br.com.topsys.service.main;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 public abstract class TSMainService<T extends Serializable> {
-	
-	
-	public abstract TSMainDAO<T> getDAO();
-	
-	
-    public List<T> pesquisar(T model){
-    	return this.getDAO().pesquisar(model);
-    }
-	
-	public T obter(T model) {
-		return this.getDAO().obter(model);
+
+	public abstract TSMainRepository<T> getRepository();
+
+	@PostMapping(value = "/obter")
+	public T obter(@RequestBody T model) {
+
+		return this.getRepository().obter(model);
 	}
-	
-	public T alterar(T model) {
-		return this.getDAO().alterar(model);
+ 
+	@PostMapping(value = "/pesquisar")
+	public List<T> pesquisar(@RequestBody T model) {
+
+		return this.getRepository().pesquisar(model);
 	}
-		
-	public T inserir(T model) {
-		return this.getDAO().inserir(model);
+
+	@PostMapping(value = "/inserir")
+	public T inserir(@RequestBody T model) {
+
+		return this.getRepository().inserir(model);
+
 	}
-		
-	public T excluir(T model) {
-		return this.getDAO().excluir(model);
+
+	@PostMapping(value = "/alterar")
+	public T alterar(@RequestBody T model) {
+
+		return this.getRepository().alterar(model);
+
 	}
-	
+
+	@PostMapping(value = "/excluir")
+	public T excluir(@RequestBody T model) {
+
+		return this.getRepository().excluir(model);
+
+	}
 
 }
