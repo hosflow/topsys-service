@@ -16,7 +16,7 @@ public abstract class TSJdbcRepository {
 	private JdbcTemplate dao;
 
 	private JdbcTemplate getDAO() {
-		this.dao.setFetchSize(50);
+		this.dao.setMaxRows(100);
 		return this.dao;
 	}
 
