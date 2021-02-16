@@ -19,10 +19,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class TSTokenService {
 
-	@Value("${smpep.jwt.expiration}")
+	@Value("${topsys.jwt.expiration}")
 	private String expiration;
 
-	@Value("${smpep.jwt.secret}")
+	@Value("${topsys.jwt.secret}")
 	private String secret;
 
 	public String gerarToken(Authentication authentication) {
@@ -36,7 +36,7 @@ public class TSTokenService {
 
 			System.out.println(usuarioJson);
 
-			return Jwts.builder().setIssuer("SMPEP").setClaims(Jwts.claims().setSubject(usuarioJson))
+			return Jwts.builder().setIssuer("TopSys IT Solutions").setClaims(Jwts.claims().setSubject(usuarioJson))
 					.setIssuedAt(new Date())
 					.setExpiration(new Date(new Date().getTime() + TSParseUtil.stringToLong(expiration)))
 					.signWith(SignatureAlgorithm.HS256, this.secret).compact();

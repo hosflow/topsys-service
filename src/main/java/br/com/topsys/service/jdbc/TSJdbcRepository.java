@@ -21,7 +21,7 @@ public abstract class TSJdbcRepository {
 	@Autowired
 	private JdbcTemplate dao;
 
-	@Value("${smpep.jdbc.maxrows}")
+	@Value("${topsys.jdbc.maxrows}")
 	private String maxRows;
 
 	private JdbcTemplate getDAO() {

@@ -44,7 +44,7 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		TSSecurityModel usuarioModel = this.tokenService.getUsuarioModel(token, this.securityModel);
 		
 		if(usuarioModel != null) {
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioModel,null,null);
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioModel,usuarioModel.getLogin(),null);
 			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 		}
 		
