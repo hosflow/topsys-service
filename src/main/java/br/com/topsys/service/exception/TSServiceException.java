@@ -8,6 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice 
+@Component
 public class TSServiceException {	
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";

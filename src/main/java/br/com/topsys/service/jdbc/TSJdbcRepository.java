@@ -3,20 +3,32 @@ package br.com.topsys.service.jdbc;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import br.com.topsys.base.util.TSParseUtil;
+import br.com.topsys.base.util.TSUtil;
+import lombok.Data;
+
 @Repository
+@Data
 public abstract class TSJdbcRepository {
 
 	@Autowired
 	private JdbcTemplate dao;
 
+	@Value("${smpep.jdbc.maxrows}")
+	private String maxRows;
+
 	private JdbcTemplate getDAO() {
-		this.dao.setMaxRows(100);
+		if (!TSUtil.isEmpty(this.maxRows)) {
+			this.dao.setMaxRows(TSParseUtil.stringToInteger(this.maxRows));
+		}
+
 		return this.dao;
 	}
 
@@ -39,7 +51,7 @@ public abstract class TSJdbcRepository {
 
 	public int update(String sql, Object... args) throws DataAccessException {
 
-		return this.getDAO(). update(sql, args);
+		return this.getDAO().update(sql, args);
 	}
 
 	public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
