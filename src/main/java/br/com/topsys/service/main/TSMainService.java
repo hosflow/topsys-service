@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.topsys.base.model.TSLazyModel;
+
 
 public abstract class TSMainService<T extends Serializable> {
 
@@ -16,11 +18,22 @@ public abstract class TSMainService<T extends Serializable> {
 
 		return this.getRepository().obter(model);
 	}
- 
+
 	@PostMapping(value = "/pesquisar")
 	public List<T> pesquisar(@RequestBody T model) {
 
 		return this.getRepository().pesquisar(model);
+	}
+
+	@PostMapping(value = "/pesquisar-lazy")
+	public List<T> pesquisar(@RequestBody TSLazyModel<T> lazyModel) {
+
+		return this.getRepository().pesquisar(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
+	}
+
+	@PostMapping(value = "/rowcount")
+	public Integer rowCount(@RequestBody T model) {
+		return this.getRepository().rowCount(model);
 	}
 
 	@PostMapping(value = "/inserir")

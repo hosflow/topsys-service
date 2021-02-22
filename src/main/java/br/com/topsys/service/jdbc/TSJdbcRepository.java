@@ -40,6 +40,10 @@ public abstract class TSJdbcRepository {
 		return getDAO().queryForObject(builder.toString(), Long.class);
 	}
 
+	protected Integer getRowCount(String sql, Object... args) {
+		return getDAO().queryForObject(sql, Integer.class, args);
+	}
+
 	public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
 		try {
 			return this.getDAO().queryForObject(sql, rowMapper, args);

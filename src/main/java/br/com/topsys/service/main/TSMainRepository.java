@@ -15,6 +15,14 @@ public abstract class TSMainRepository<T extends Serializable> extends TSJdbcRep
 		throw new TSSystemException(NAO_IMPLEMENTANDO);
 	}
 
+	public List<T> pesquisar(T model, int offset, int size) {
+		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	}
+
+	public Integer rowCount(T model) {
+		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	}
+
 	public T obter(T model) {
 		throw new TSSystemException(NAO_IMPLEMENTANDO);
 	}
