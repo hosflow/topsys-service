@@ -31,7 +31,7 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		
 		String token = recuperarToken(request);
 		
-		if(this.tokenService.isTokenValido(token)) {
+		if(this.tokenService.isTokenValido(token).booleanValue()) {
 			autenticarWithToken(token);
 		}
 

@@ -34,8 +34,6 @@ public class TSTokenService {
 		try {
 			String usuarioJson = objectMapper.writeValueAsString(model);
 
-			System.out.println(usuarioJson);
-
 			return Jwts.builder().setIssuer("TopSys IT Solutions").setClaims(Jwts.claims().setSubject(usuarioJson))
 					.setIssuedAt(new Date())
 					.setExpiration(new Date(new Date().getTime() + TSParseUtil.stringToLong(expiration)))
