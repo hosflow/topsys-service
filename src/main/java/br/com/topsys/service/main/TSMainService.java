@@ -3,6 +3,8 @@ package br.com.topsys.service.main;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -36,14 +38,14 @@ public abstract class TSMainService<T extends Serializable> {
 	}
 
 	@PostMapping(value = "/insert")
-	public T insert(@RequestBody T model) {
+	public T insert(@RequestBody @Valid T model) {
 
 		return this.getRepository().insert(model);
 
 	}
 
 	@PostMapping(value = "/update")
-	public T update(@RequestBody T model) {
+	public T update(@RequestBody @Valid T model) {
 
 		return this.getRepository().update(model);
 
