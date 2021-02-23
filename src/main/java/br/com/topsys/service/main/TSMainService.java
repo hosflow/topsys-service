@@ -8,27 +8,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.topsys.base.model.TSLazyModel;
 
-
 public abstract class TSMainService<T extends Serializable> {
 
-	public abstract TSMainRepository<T> getRepository();
+	protected abstract TSMainRepository<T> getRepository();
 
-	@PostMapping(value = "/obter")
-	public T obter(@RequestBody T model) {
+	@PostMapping(value = "/get")
+	public T get(@RequestBody T model) {
 
-		return this.getRepository().obter(model);
+		return this.getRepository().get(model);
 	}
 
-	@PostMapping(value = "/pesquisar")
-	public List<T> pesquisar(@RequestBody T model) {
+	@PostMapping(value = "/find")
+	public List<T> find(@RequestBody T model) {
 
-		return this.getRepository().pesquisar(model);
+		return this.getRepository().find(model);
 	}
 
-	@PostMapping(value = "/pesquisar-lazy")
-	public List<T> pesquisar(@RequestBody TSLazyModel<T> lazyModel) {
+	@PostMapping(value = "/find-lazy")
+	public List<T> find(@RequestBody TSLazyModel<T> lazyModel) {
 
-		return this.getRepository().pesquisar(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
+		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
 
 	@PostMapping(value = "/rowcount")
@@ -36,24 +35,24 @@ public abstract class TSMainService<T extends Serializable> {
 		return this.getRepository().rowCount(model);
 	}
 
-	@PostMapping(value = "/inserir")
-	public T inserir(@RequestBody T model) {
+	@PostMapping(value = "/insert")
+	public T insert(@RequestBody T model) {
 
-		return this.getRepository().inserir(model);
-
-	}
-
-	@PostMapping(value = "/alterar")
-	public T alterar(@RequestBody T model) {
-
-		return this.getRepository().alterar(model);
+		return this.getRepository().insert(model);
 
 	}
 
-	@PostMapping(value = "/excluir")
-	public T excluir(@RequestBody T model) {
+	@PostMapping(value = "/update")
+	public T update(@RequestBody T model) {
 
-		return this.getRepository().excluir(model);
+		return this.getRepository().update(model);
+
+	}
+
+	@PostMapping(value = "/delete")
+	public T delete(@RequestBody T model) {
+
+		return this.getRepository().delete(model);
 
 	}
 

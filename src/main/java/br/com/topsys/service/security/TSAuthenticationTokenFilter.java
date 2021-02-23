@@ -29,19 +29,19 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		String token = recuperarToken(request);
+		String token = getToken(request);
 		
-		if(this.tokenService.isTokenValido(token).booleanValue()) {
-			autenticarWithToken(token);
+		if(this.tokenService.isTokenValid(token).booleanValue()) {
+			authenticateWithToken(token);
 		}
 
 		filterChain.doFilter(request, response);
 
 	}
 	
-	private void autenticarWithToken(String token) {
+	private void authenticateWithToken(String token) {
 		
-		TSSecurityModel usuarioModel = this.tokenService.getUsuarioModel(token, this.securityModel);
+		TSSecurityModel usuarioModel = this.tokenService.getUserModel(token, this.securityModel);
 		
 		if(usuarioModel != null) {
 			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioModel,usuarioModel.getLogin(),null);
@@ -51,7 +51,7 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		
 	}
 
-	private String recuperarToken(HttpServletRequest request) {
+	private String getToken(HttpServletRequest request) {
 
 		String token = request.getHeader("Authorization");
 		

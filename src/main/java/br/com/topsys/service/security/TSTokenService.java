@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSSecurityModel;
 import br.com.topsys.base.util.TSParseUtil;
 import io.jsonwebtoken.Claims;
@@ -17,7 +18,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class TSTokenService {
+public final class TSTokenService {
 
 	@Value("${topsys.jwt.expiration}")
 	private String expiration;
@@ -25,7 +26,7 @@ public class TSTokenService {
 	@Value("${topsys.jwt.secret}")
 	private String secret;
 
-	public String gerarToken(Authentication authentication) {
+	public String generateToken(Authentication authentication) {
 
 		TSSecurityModel model = (TSSecurityModel) authentication.getPrincipal();
 
@@ -46,7 +47,7 @@ public class TSTokenService {
 
 	}
 
-	public Boolean isTokenValido(String token) {
+	public Boolean isTokenValid(String token) {
 		try {
 			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
 			return true;
@@ -56,22 +57,23 @@ public class TSTokenService {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public TSSecurityModel getUsuarioModel(String token, Class classe) {
+	public TSSecurityModel getUserModel(String token, Class classe) {
 
 		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 
 		ObjectMapper objectMapper = getObjectMapper();
 
-		TSSecurityModel usuarioModel = null;
+		TSSecurityModel userModel = null;
 		try {
-			usuarioModel = (TSSecurityModel) objectMapper.readValue(claims.getSubject(), classe);
+			userModel = (TSSecurityModel) objectMapper.readValue(claims.getSubject(), classe);
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new TSSystemException(e);
 
 		}
 
-		return usuarioModel;
+		return userModel;
 
 	}
 

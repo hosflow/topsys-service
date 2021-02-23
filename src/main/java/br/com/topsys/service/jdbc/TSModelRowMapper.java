@@ -12,7 +12,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	private String[] parametros;
 	private Class<T> classe;
-	private BeanWrapper wrapper;
+	
 
 	public TSModelRowMapper(Class<T> classe, String... parametros) {
 		this.classe = classe;
@@ -23,7 +23,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 	public T mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
 		T objeto = BeanUtils.instantiateClass(classe);
-		wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
+		BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
 		wrapper.setAutoGrowNestedPaths(true);
 
 		if (parametros != null) {

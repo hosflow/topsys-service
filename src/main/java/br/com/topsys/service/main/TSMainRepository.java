@@ -9,33 +9,33 @@ import br.com.topsys.service.jdbc.TSJdbcRepository;
 
 public abstract class TSMainRepository<T extends Serializable> extends TSJdbcRepository {
 
-	private static final String NAO_IMPLEMENTANDO = "Método não implementando no Repository";
+	private static final String NOT_IMPLEMENTED = "Método não implementando no Repository";
 
-	public List<T> pesquisar(T model) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	public List<T> find(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	public List<T> pesquisar(T model, int offset, int size) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	public List<T> find(T model, int offset, int size) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
 	public Integer rowCount(T model) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	public T obter(T model) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	public T get(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	public T alterar(T model) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	public T update(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	public T inserir(T model) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	public T insert(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	public T excluir(T model) {
-		throw new TSSystemException(NAO_IMPLEMENTANDO);
+	public T delete(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 }

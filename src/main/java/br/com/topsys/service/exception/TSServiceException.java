@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice 
 @Component
-public class TSServiceException {	
+public final class TSServiceException {	
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
@@ -31,7 +31,7 @@ public class TSServiceException {
 		
 		log.error(ex.getMessage());
 		
-		return new ResponseEntity<Object>(
+		return new ResponseEntity<>(
 				new TSResponseExceptionModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), ERRO_INTERNO),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	} 
@@ -40,7 +40,7 @@ public class TSServiceException {
 	public ResponseEntity<Object> handleException(TSApplicationException ex) {
 		
 		HttpStatus type = ex.getTSType().equals(TSType.BUSINESS) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-		return new ResponseEntity<Object>(new TSResponseExceptionModel(type.value(), new Date(), ex.getMessage()),
+		return new ResponseEntity<>(new TSResponseExceptionModel(type.value(), new Date(), ex.getMessage()),
 				type);
  
 	}
@@ -48,7 +48,7 @@ public class TSServiceException {
 	@ExceptionHandler(DuplicateKeyException.class)
 	public ResponseEntity<Object> handleException(DuplicateKeyException ex) {
 		
-		return new ResponseEntity<Object>(
+		return new ResponseEntity<>(
 				new TSResponseExceptionModel(HttpStatus.BAD_REQUEST.value(), new Date(), "Já existe esse registro!"),
 				HttpStatus.BAD_REQUEST);
 
@@ -57,7 +57,7 @@ public class TSServiceException {
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
 		
-		return new ResponseEntity<Object>(
+		return new ResponseEntity<>(
 				new TSResponseExceptionModel(HttpStatus.BAD_REQUEST.value(), new Date(), "Existem registros dependentes!"),
 				HttpStatus.BAD_REQUEST);
 
@@ -66,7 +66,7 @@ public class TSServiceException {
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleException(EmptyResultDataAccessException ex) {
 		
-		return new ResponseEntity<Object>(
+		return new ResponseEntity<>(
 				new TSResponseExceptionModel(HttpStatus.OK.value(), new Date(), "Não retornou nenhum registro!"),
 				HttpStatus.OK); 
 
@@ -75,7 +75,7 @@ public class TSServiceException {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleException(MethodArgumentNotValidException ex) {
 		
-		return new ResponseEntity<Object>(
+		return new ResponseEntity<>(
 				new TSResponseExceptionModel(HttpStatus.BAD_REQUEST.value(), new Date(), "Campos obrigatórios!"),
 				HttpStatus.BAD_REQUEST);
 

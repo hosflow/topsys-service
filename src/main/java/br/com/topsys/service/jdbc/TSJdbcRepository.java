@@ -1,5 +1,6 @@
 package br.com.topsys.service.jdbc;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public abstract class TSJdbcRepository {
 		return getDAO().queryForObject(sql, Integer.class, args);
 	}
 
-	public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+	protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
 		try {
 			return this.getDAO().queryForObject(sql, rowMapper, args);
 		} catch (EmptyResultDataAccessException e) {
@@ -53,16 +54,16 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	public int update(String sql, Object... args) throws DataAccessException {
+	protected int update(String sql, Object... args) throws DataAccessException {
 
 		return this.getDAO().update(sql, args);
 	}
 
-	public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+	protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
 		try {
 			return this.getDAO().query(sql, rowMapper, args);
 		} catch (EmptyResultDataAccessException e) {
-			return null;
+			return Collections.emptyList();
 		}
 	}
 

@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import br.com.topsys.base.model.TSSecurityModel;
 
 @Service
-public class TSAuthenticationService {
+public final class TSAuthenticationService {
 
 	
 	@Autowired
 	private TSTokenService tokenService;
 
 	
-	public TSSecurityModel autenticar(TSSecurityModel model) {
+	public TSSecurityModel authenticate(TSSecurityModel model) {
 				
 		UsernamePasswordAuthenticationToken authenticationToken = null;
 
@@ -24,7 +24,7 @@ public class TSAuthenticationService {
 
 			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			
-			String token = tokenService.gerarToken(authenticationToken);
+			String token = tokenService.generateToken(authenticationToken);
 				
 			model.setToken(token);
 			
