@@ -7,14 +7,13 @@ import java.sql.Types;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	private String[] parametros;
 	private Class<T> classe;
-	
+
 
 	public TSModelRowMapper(Class<T> classe, String... parametros) {
 		this.classe = classe;
@@ -23,7 +22,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	@Override
 	public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-		
+
 		T objeto = BeanUtils.instantiateClass(classe);
 		BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
 		wrapper.setAutoGrowNestedPaths(true);
@@ -31,13 +30,13 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		if (parametros != null) {
 			for (int x = 0; x < parametros.length; x++) {
 				if (wrapper.isWritableProperty(parametros[x])) {
-				
-				  if(Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1)){
-					  wrapper.setPropertyValue(parametros[x], rs.getTimestamp(x + 1));
+
+				  if(Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1) || Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)){
+					  wrapper.setPropertyValue(parametros[x], rs.getTimestamp(x + 1).toLocalDateTime());
 				  }else {
 					  wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
 				  }
-					
+
 				}
 
 			}
@@ -46,5 +45,5 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		return objeto;
 
 	}
-	
+
 }
