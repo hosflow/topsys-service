@@ -1,13 +1,13 @@
 package br.com.topsys.service.main;
 
-import java.io.Serializable;
 import java.util.List;
 
 import br.com.topsys.base.exception.TSSystemException;
+import br.com.topsys.base.model.TSMainModel;
 import br.com.topsys.service.jdbc.TSJdbcRepository;
 
 
-public abstract class TSMainRepository<T extends Serializable> extends TSJdbcRepository {
+public abstract class TSMainRepository<T extends TSMainModel> extends TSJdbcRepository {
 
 	private static final String NOT_IMPLEMENTED = "Método não implementando no Repository";
 

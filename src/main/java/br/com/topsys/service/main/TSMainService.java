@@ -1,6 +1,5 @@
 package br.com.topsys.service.main;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,8 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.topsys.base.model.TSLazyModel;
+import br.com.topsys.base.model.TSMainModel;
 
-public abstract class TSMainService<T extends Serializable> {
+public abstract class TSMainService<T extends TSMainModel> {
 
 	protected abstract TSMainRepository<T> getRepository();
 
