@@ -9,6 +9,8 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.jdbc.core.RowMapper;
 
+import br.com.topsys.base.util.TSUtil;
+
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	private String[] parametros;
@@ -32,7 +34,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 				if (wrapper.isWritableProperty(parametros[x])) {
 
 				  if(Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1) || Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)){
-					  wrapper.setPropertyValue(parametros[x], rs.getTimestamp(x + 1).toLocalDateTime());
+					  wrapper.setPropertyValue(parametros[x], TSUtil.isEmpty(rs.getTimestamp(x + 1)) ? null : rs.getTimestamp(x + 1).toLocalDateTime());
 				  }else {
 					  wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
 				  }
