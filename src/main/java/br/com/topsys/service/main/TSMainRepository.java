@@ -14,8 +14,16 @@ public abstract class TSMainRepository<T extends TSMainModel> extends TSJdbcRepo
 	public List<T> find(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
+	
+	public List<T> findHistory(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
+	}
 
 	public List<T> find(T model, int offset, int size) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
+	}
+	
+	public List<T> findHistory(T model, int offset, int size) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
@@ -24,6 +32,10 @@ public abstract class TSMainRepository<T extends TSMainModel> extends TSJdbcRepo
 	}
 
 	public T get(T model) {
+		throw new TSSystemException(NOT_IMPLEMENTED);
+	}
+	
+	public T getHistory(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 

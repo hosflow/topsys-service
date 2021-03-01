@@ -19,11 +19,23 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().get(model);
 	}
+	
+	@PostMapping(value = "/get-history")
+	public T getHistory(@RequestBody T model) {
+
+		return this.getRepository().getHistory(model);
+	}
 
 	@PostMapping(value = "/find")
 	public List<T> find(@RequestBody T model) {
 
 		return this.getRepository().find(model);
+	}
+	
+	@PostMapping(value = "/find-history")
+	public List<T> findHistory(@RequestBody T model) {
+
+		return this.getRepository().findHistory(model);
 	}
 
 	@PostMapping(value = "/find-lazy")
@@ -31,6 +43,13 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
+	
+	@PostMapping(value = "/find-lazy-history")
+	public List<T> findHistory(@RequestBody TSLazyModel<T> lazyModel) {
+
+		return this.getRepository().findHistory(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
+	}
+
 
 	@PostMapping(value = "/rowcount")
 	public Integer rowCount(@RequestBody T model) {
