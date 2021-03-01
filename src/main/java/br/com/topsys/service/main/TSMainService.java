@@ -61,7 +61,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().insert(model);
 
-	}
+	} 
 
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
