@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice 
 @Component
-public final class TSServiceException {	
+public class TSServiceException {	
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
