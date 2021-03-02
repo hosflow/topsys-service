@@ -20,14 +20,14 @@ import br.com.topsys.base.util.TSType;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestControllerAdvice 
+@RestControllerAdvice
 @Component
 public class TSServiceException {	
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
 	@ExceptionHandler({ NullPointerException.class, TSSystemException.class, DataAccessException.class })
-	public ResponseEntity<Object> handleException(RuntimeException ex) {
+	public ResponseEntity<Object> handleException(Exception ex) {
 		
 		log.error(ex.getMessage());
 		
