@@ -44,12 +44,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
 	
-	@PostMapping(value = "/find-lazy-history")
-	public List<T> findHistory(@RequestBody TSLazyModel<T> lazyModel) {
-
-		return this.getRepository().findHistory(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
-	}
-
 
 	@PostMapping(value = "/rowcount")
 	public Integer rowCount(@RequestBody T model) {

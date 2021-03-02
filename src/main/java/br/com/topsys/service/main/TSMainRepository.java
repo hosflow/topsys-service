@@ -23,10 +23,6 @@ public abstract class TSMainRepository<T extends TSMainModel> extends TSJdbcRepo
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 	
-	public List<T> findHistory(T model, int offset, int size) {
-		throw new TSSystemException(NOT_IMPLEMENTED);
-	}
-
 	public Integer rowCount(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
