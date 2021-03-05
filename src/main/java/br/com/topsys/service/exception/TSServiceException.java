@@ -26,7 +26,7 @@ public class TSServiceException {
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
-	@ExceptionHandler({ NullPointerException.class, TSSystemException.class, DataAccessException.class })
+	@ExceptionHandler({Exception.class })
 	public ResponseEntity<Object> handleException(Exception ex) {
 		
 		log.error(ex.getMessage());
