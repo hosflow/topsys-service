@@ -2,7 +2,6 @@ package br.com.topsys.service.exception;
 
 import java.util.Date;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.topsys.base.exception.TSApplicationException;
-import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +24,7 @@ public class TSServiceException {
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
-	@ExceptionHandler({Exception.class })
+	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleException(Exception ex) {
 		
 		log.error(ex.getMessage());
