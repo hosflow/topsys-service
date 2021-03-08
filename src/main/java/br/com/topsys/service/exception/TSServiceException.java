@@ -1,6 +1,7 @@
 package br.com.topsys.service.exception;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -31,7 +32,6 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-				.timestamp(LocalDateTime.now())
 				.message(ERRO_INTERNO).build(),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 
@@ -44,7 +44,7 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(type.value())
-				.timestamp(LocalDateTime.now())
+				.timestamp(new Date())
 				.message(ex.getMessage()).build(),
 				type);
 
@@ -55,7 +55,7 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(LocalDateTime.now())
+				.timestamp(new Date())
 				.message("Já existe esse registro!").build(),
 				HttpStatus.BAD_REQUEST);
 
@@ -66,7 +66,7 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(LocalDateTime.now())
+				.timestamp(new Date())
 				.message("Existem registros dependentes!").build(),
 				HttpStatus.BAD_REQUEST);
 
@@ -77,7 +77,7 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.OK.value())
-				.timestamp(LocalDateTime.now())
+				.timestamp(new Date())
 				.message("Não retornou nenhum registro!").build(),
 				HttpStatus.OK);
 
@@ -88,7 +88,7 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(LocalDateTime.now())
+				.timestamp(new Date())
 				.message("Campos obrigatórios!").build(),
 				HttpStatus.BAD_REQUEST);
 
