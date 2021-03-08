@@ -1,6 +1,6 @@
 package br.com.topsys.service.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,64 +20,78 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 @Component
-public class TSServiceException {	
+public class TSServiceException {
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleException(Exception ex) {
-		
+
 		log.error(ex.getMessage());
-		
-		return new ResponseEntity<>(
-				new TSResponseExceptionModel(HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), ERRO_INTERNO),
+
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+				.timestamp(LocalDateTime.now())
+				.message(ERRO_INTERNO).build(),
 				HttpStatus.INTERNAL_SERVER_ERROR);
-	} 
- 
+
+	}
+
 	@ExceptionHandler(TSApplicationException.class)
 	public ResponseEntity<Object> handleException(TSApplicationException ex) {
-		
+
 		HttpStatus type = ex.getTSType().equals(TSType.BUSINESS) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
-		return new ResponseEntity<>(new TSResponseExceptionModel(type.value(), new Date(), ex.getMessage()),
+
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(type.value())
+				.timestamp(LocalDateTime.now())
+				.message(ex.getMessage()).build(),
 				type);
- 
+
 	}
 
 	@ExceptionHandler(DuplicateKeyException.class)
 	public ResponseEntity<Object> handleException(DuplicateKeyException ex) {
-		
-		return new ResponseEntity<>(
-				new TSResponseExceptionModel(HttpStatus.BAD_REQUEST.value(), new Date(), "Já existe esse registro!"),
+
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(HttpStatus.BAD_REQUEST.value())
+				.timestamp(LocalDateTime.now())
+				.message("Já existe esse registro!").build(),
 				HttpStatus.BAD_REQUEST);
 
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
-		
-		return new ResponseEntity<>(
-				new TSResponseExceptionModel(HttpStatus.BAD_REQUEST.value(), new Date(), "Existem registros dependentes!"),
+
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(HttpStatus.BAD_REQUEST.value())
+				.timestamp(LocalDateTime.now())
+				.message("Existem registros dependentes!").build(),
 				HttpStatus.BAD_REQUEST);
 
 	}
 
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleException(EmptyResultDataAccessException ex) {
-		
-		return new ResponseEntity<>(
-				new TSResponseExceptionModel(HttpStatus.OK.value(), new Date(), "Não retornou nenhum registro!"),
-				HttpStatus.OK); 
+
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(HttpStatus.OK.value())
+				.timestamp(LocalDateTime.now())
+				.message("Não retornou nenhum registro!").build(),
+				HttpStatus.OK);
 
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleException(MethodArgumentNotValidException ex) {
-		
-		return new ResponseEntity<>(
-				new TSResponseExceptionModel(HttpStatus.BAD_REQUEST.value(), new Date(), "Campos obrigatórios!"),
+
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(HttpStatus.BAD_REQUEST.value())
+				.timestamp(LocalDateTime.now())
+				.message("Campos obrigatórios!").build(),
 				HttpStatus.BAD_REQUEST);
 
 	}
-
 
 }
