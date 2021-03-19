@@ -3,6 +3,7 @@ package br.com.topsys.service.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.OffsetDateTime;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -34,7 +35,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 				if (wrapper.isWritableProperty(parametros[x])) {
 
 				  if(Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1) || Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)){
-					  wrapper.setPropertyValue(parametros[x], TSUtil.isEmpty(rs.getTimestamp(x + 1)) ? null : rs.getTimestamp(x + 1).toLocalDateTime());
+					  wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
 				  }else {
 					  wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
 				  }
