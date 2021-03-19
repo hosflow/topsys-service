@@ -1,6 +1,5 @@
 package br.com.topsys.service.exception;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.dao.DataIntegrityViolationException;

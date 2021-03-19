@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
@@ -12,8 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.jdbc.core.RowMapper;
-
-import br.com.topsys.base.util.TSUtil;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
@@ -36,13 +33,9 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 			for (int x = 0; x < parametros.length; x++) {
 				if (wrapper.isWritableProperty(parametros[x])) {
 
-					if (Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1)) {
+					if (Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1) || Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)) {
 
 						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
-
-					} else if (Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)) {
-
-						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDateTime.class));
 
 					} else if (Types.DATE == rs.getMetaData().getColumnType(x + 1)) {
 
