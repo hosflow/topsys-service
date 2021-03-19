@@ -3,6 +3,9 @@ package br.com.topsys.service.jdbc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
 import org.springframework.beans.BeanUtils;
@@ -16,7 +19,6 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	private String[] parametros;
 	private Class<T> classe;
-
 
 	public TSModelRowMapper(Class<T> classe, String... parametros) {
 		this.classe = classe;
@@ -34,11 +36,25 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 			for (int x = 0; x < parametros.length; x++) {
 				if (wrapper.isWritableProperty(parametros[x])) {
 
-				  if(Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1) || Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)){
-					  wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
-				  }else {
-					  wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
-				  }
+					if (Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1)) {
+
+						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
+
+					} else if (Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)) {
+
+						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDateTime.class));
+
+					} else if (Types.DATE == rs.getMetaData().getColumnType(x + 1)) {
+
+						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDate.class));
+
+					} else if (Types.TIME == rs.getMetaData().getColumnType(x + 1)) {
+
+						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalTime.class));
+
+					} else {
+						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
+					}
 
 				}
 
