@@ -30,18 +30,22 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		wrapper.setAutoGrowNestedPaths(true);
 
 		if (parametros != null) {
+			
 			for (int x = 0; x < parametros.length; x++) {
+				
 				if (wrapper.isWritableProperty(parametros[x])) {
+					
+					int column = rs.getMetaData().getColumnType(x + 1);
 
-					if (Types.TIMESTAMP_WITH_TIMEZONE == rs.getMetaData().getColumnType(x + 1) || Types.TIMESTAMP == rs.getMetaData().getColumnType(x + 1)) {
+					if (Types.TIMESTAMP_WITH_TIMEZONE == column || Types.TIMESTAMP == column) {
 
 						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
 
-					} else if (Types.DATE == rs.getMetaData().getColumnType(x + 1)) {
+					} else if (Types.DATE == column) {
 
 						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDate.class));
 
-					} else if (Types.TIME == rs.getMetaData().getColumnType(x + 1)) {
+					} else if (Types.TIME == column) {
 
 						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalTime.class));
 
