@@ -1,6 +1,7 @@
 package br.com.topsys.service.main;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -22,7 +23,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().get(model);
 	}
-	
+
 	@PostMapping(value = "/get-history")
 	public T getHistory(@RequestBody T model) {
 
@@ -34,7 +35,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().find(model);
 	}
-	
+
 	@PostMapping(value = "/find-history")
 	public List<T> findHistory(@RequestBody T model) {
 
@@ -46,29 +47,28 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
-	
 
 	@PostMapping(value = "/rowcount")
 	public Integer rowCount(@RequestBody T model) {
-		
+
 		return this.getRepository().rowCount(model);
-	
+
 	}
-	
+
 	@PostMapping(value = "/insert")
 	public T insert(@RequestBody @Valid T model) {
-		
+
 		this.validFields(model);
-		
+
 		return this.getRepository().insert(model);
 
-	} 
+	}
 
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
-		
+
 		this.validFields(model);
-		
+
 		return this.getRepository().update(model);
 
 	}
@@ -79,19 +79,42 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().delete(model);
 
 	}
-	
-	protected void validFields(Object...objects) {
-		
-		if(TSUtil.isEmpty(objects)) {
-			
-			throw new TSApplicationException("Campos obrigátorios",TSType.ERROR);
+
+	protected void validFields(Object... objects) {
+
+		if (TSUtil.isEmpty(objects)) {
+
+			throw new TSApplicationException("Campos obrigátorios", TSType.ERROR);
 		}
-		
+
 	}
-	
+
+	protected void validFields(Map<String, Object> map) {
+
+		StringBuilder builder = new StringBuilder();
+
+		map.forEach((chave, valor) -> {
+
+			if (TSUtil.isEmpty(valor)) {
+				builder.append(chave).append(",");
+			}
+
+		});
+
+		if (!builder.isEmpty()) {
+
+			builder.insert(0, "Campos obrigátorios: [");
+
+			builder.deleteCharAt(builder.length() - 1).append("]");
+
+			throw new TSApplicationException(builder.toString(), TSType.ERROR);
+		}
+
+	}
+
 	protected void validFields(T model) {
-		// metodo para ser implementado se quiser validar outros campos no insert e update.
+		// metodo para ser implementado se quiser validar outros campos no insert e
+		// update.
 	}
-	
 
 }
