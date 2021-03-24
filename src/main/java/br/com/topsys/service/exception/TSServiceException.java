@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @RestControllerAdvice
 @Component
 public class TSServiceException {
@@ -27,7 +26,7 @@ public class TSServiceException {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleException(Exception ex) {
 
-		log.error(ex.getMessage());
+		ex.printStackTrace();
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
