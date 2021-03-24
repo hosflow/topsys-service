@@ -58,7 +58,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/insert")
 	public T insert(@RequestBody @Valid T model) {
 		
-		this.validFields();
+		this.validFields(model);
 		
 		return this.getRepository().insert(model);
 
@@ -67,7 +67,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
 		
-		this.validFields();
+		this.validFields(model);
 		
 		return this.getRepository().update(model);
 
@@ -89,7 +89,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		
 	}
 	
-	protected void validFields() {
+	protected void validFields(T model) {
 		// metodo para ser implementado se quiser validar outros campos no insert e update.
 	}
 	
