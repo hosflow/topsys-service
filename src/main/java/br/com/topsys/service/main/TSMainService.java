@@ -103,7 +103,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		if (!builder.isEmpty()) {
 
-			builder.insert(0, "Campos obrigátorios: [");
+			builder.insert(0, "Campos obrigatórios: [");
 
 			builder.deleteCharAt(builder.length() - 1).append("]");
 
