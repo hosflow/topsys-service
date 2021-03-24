@@ -7,8 +7,11 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSLazyModel;
 import br.com.topsys.base.model.TSMainModel;
+import br.com.topsys.base.util.TSType;
+import br.com.topsys.base.util.TSUtil;
 
 public abstract class TSMainService<T extends TSMainModel> {
 
@@ -47,19 +50,25 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/rowcount")
 	public Integer rowCount(@RequestBody T model) {
+		
 		return this.getRepository().rowCount(model);
+	
 	}
-
+	
 	@PostMapping(value = "/insert")
 	public T insert(@RequestBody @Valid T model) {
-
+		
+		this.validFields();
+		
 		return this.getRepository().insert(model);
 
 	} 
 
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
-
+		
+		this.validFields();
+		
 		return this.getRepository().update(model);
 
 	}
@@ -70,5 +79,19 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().delete(model);
 
 	}
+	
+	protected void validFields(Object...objects) {
+		
+		if(TSUtil.isEmpty(objects)) {
+			
+			throw new TSApplicationException("Campos obrigátorios",TSType.ERROR);
+		}
+		
+	}
+	
+	protected void validFields() {
+		// metodo para ser implementado se quiser validar outros campos no insert e update.
+	}
+	
 
 }
