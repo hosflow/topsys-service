@@ -61,11 +61,11 @@ public class TSServiceException {
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
-
+		
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date())
-				.message("Existem registros dependentes!").build(),
+				.message("Integridade violada ou existem registros dependentes!").build(),
 				HttpStatus.BAD_REQUEST);
 
 	}
