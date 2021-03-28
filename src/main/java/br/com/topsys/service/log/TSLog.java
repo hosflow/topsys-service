@@ -67,7 +67,7 @@ public final class TSLog {
 
 	}
 
-	private void saveInFile(final long duracaoSegundos) {
+	private void saveInFile(long duracaoSegundos) {
 
 		Path path = Paths.get(this.pathFile + LocalDate.now().format(DateTimeFormatter.ofPattern(DATA)) + ".csv");
 
