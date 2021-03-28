@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.topsys.base.util.TSParseUtil;
 import br.com.topsys.base.util.TSUtil;
+import br.com.topsys.service.log.TSLog;
 import lombok.Data;
 
 @Repository
@@ -42,28 +43,48 @@ public abstract class TSJdbcRepository {
 	}
 
 	protected Integer getRowCount(String sql, Object... args) {
-		return getDAO().queryForObject(sql, Integer.class, args);
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
+		try {
+			return getDAO().queryForObject(sql, Integer.class, args);
+		} finally {
+			tsLog.end();
+		}
+
 	}
 
 	protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
 		try {
 			return this.getDAO().queryForObject(sql, rowMapper, args);
 		} catch (EmptyResultDataAccessException e) {
 			return null;
+		} finally {
+			tsLog.end();
 		}
 
 	}
 
 	protected int update(String sql, Object... args) throws DataAccessException {
-
-		return this.getDAO().update(sql, args);
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
+		try {
+			return this.getDAO().update(sql, args);
+		} finally {
+			tsLog.end();
+		}
 	}
 
 	protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
 		try {
 			return this.getDAO().query(sql, rowMapper, args);
 		} catch (EmptyResultDataAccessException e) {
 			return Collections.emptyList();
+		} finally {
+			tsLog.end();
 		}
 	}
 
