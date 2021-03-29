@@ -30,32 +30,29 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		wrapper.setAutoGrowNestedPaths(true);
 
 		if (parametros != null) {
-			
+
 			for (int x = 0; x < parametros.length; x++) {
-				
-				if (wrapper.isWritableProperty(parametros[x])) {
-					
-					int column = rs.getMetaData().getColumnType(x + 1);
 
-					if (Types.TIMESTAMP_WITH_TIMEZONE == column || Types.TIMESTAMP == column) {
+				int column = rs.getMetaData().getColumnType(x + 1);
 
-						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
+				if (Types.TIMESTAMP_WITH_TIMEZONE == column || Types.TIMESTAMP == column) {
 
-					} else if (Types.DATE == column) {
+					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
 
-						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDate.class));
+				} else if (Types.DATE == column) {
 
-					} else if (Types.TIME == column) {
+					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDate.class));
 
-						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalTime.class));
+				} else if (Types.TIME == column) {
 
-					} else {
-						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
-					}
+					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalTime.class));
 
+				} else {
+					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
 				}
 
 			}
+
 		}
 
 		return objeto;
