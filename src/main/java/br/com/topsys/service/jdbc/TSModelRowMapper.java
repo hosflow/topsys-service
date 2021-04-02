@@ -12,8 +12,11 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.jdbc.core.RowMapper;
 
+import br.com.topsys.base.util.TSCryptoUtil;
+
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
+	private static final String DECRYPT = "decrypt.";
 	private String[] parametros;
 	private Class<T> classe;
 
@@ -48,7 +51,12 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalTime.class));
 
 				} else {
-					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
+					if(parametros[x].startsWith(DECRYPT)) {
+						wrapper.setPropertyValue(parametros[x].replace(DECRYPT,""),TSCryptoUtil.desCriptografar(String.valueOf(rs.getObject(x + 1))));
+					}else {
+						wrapper.setPropertyValue(parametros[x],rs.getObject(x + 1));
+					}
+					
 				}
 
 			}
