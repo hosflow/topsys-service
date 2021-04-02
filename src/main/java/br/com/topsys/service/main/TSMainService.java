@@ -1,5 +1,6 @@
 package br.com.topsys.service.main;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/insert")
 	public T insert(@RequestBody @Valid T model) {
 
+		this.validAccessControl(model);
+
 		this.validFields(model);
 
 		return this.getRepository().insert(model);
@@ -66,6 +69,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
+
+		this.validAccessControl(model);
 
 		this.validFields(model);
 
@@ -115,6 +120,15 @@ public abstract class TSMainService<T extends TSMainModel> {
 	protected void validFields(T model) {
 		// metodo para ser implementado se quiser validar outros campos no insert e
 		// update.
+	}
+
+	protected void validAccessControl(T model) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("controleAcesso.usuarioFuncaoId",
+				(model.getControleAcesso() == null ? null : model.getControleAcesso().getUsuarioFuncaoId()));
+		map.put("controleAcesso.origemId",
+				(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
+		this.validFields(map);
 	}
 
 }
