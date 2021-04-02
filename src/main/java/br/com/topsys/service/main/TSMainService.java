@@ -122,7 +122,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		// update.
 	}
 
-	protected void validAccessControl(T model) {
+	protected void validAccessControl(TSMainModel model) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("controleAcesso.usuarioFuncaoId",
 				(model.getControleAcesso() == null ? null : model.getControleAcesso().getUsuarioFuncaoId()));
