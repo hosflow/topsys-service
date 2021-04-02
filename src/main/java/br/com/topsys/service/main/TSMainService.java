@@ -22,11 +22,15 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/get")
 	public T get(@RequestBody T model) {
 
+		this.validAccessControl(model);
+
 		return this.getRepository().get(model);
 	}
 
 	@PostMapping(value = "/get-history")
 	public T getHistory(@RequestBody T model) {
+
+		this.validAccessControl(model);
 
 		return this.getRepository().getHistory(model);
 	}
@@ -34,11 +38,15 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/find")
 	public List<T> find(@RequestBody T model) {
 
+		this.validAccessControl(model);
+
 		return this.getRepository().find(model);
 	}
 
 	@PostMapping(value = "/find-history")
 	public List<T> findHistory(@RequestBody T model) {
+
+		this.validAccessControl(model);
 
 		return this.getRepository().findHistory(model);
 	}
@@ -46,11 +54,15 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/find-lazy")
 	public List<T> find(@RequestBody TSLazyModel<T> lazyModel) {
 
+		this.validAccessControl(lazyModel);
+
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
 
 	@PostMapping(value = "/rowcount")
 	public Integer rowCount(@RequestBody T model) {
+		
+		this.validAccessControl(model);
 
 		return this.getRepository().rowCount(model);
 
@@ -80,6 +92,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/delete")
 	public T delete(@RequestBody T model) {
+
+		this.validAccessControl(model);
 
 		return this.getRepository().delete(model);
 
