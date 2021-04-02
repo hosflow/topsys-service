@@ -52,10 +52,10 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 				} else {
 					if(parametros[x].startsWith(DECRYPT)) {
-						wrapper.setPropertyValue(parametros[x].replace(DECRYPT,""),TSCryptoUtil.desCriptografar(String.valueOf(rs.getObject(x + 1))));
+						wrapper.setPropertyValue(parametros[x].replace(DECRYPT,""),TSCryptoUtil.decrypt(String.valueOf(rs.getObject(x + 1))));
 					}else {
 						wrapper.setPropertyValue(parametros[x],rs.getObject(x + 1));
-					}
+					} 
 					
 				}
 
