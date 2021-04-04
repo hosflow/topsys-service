@@ -87,7 +87,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
-		
+
 		this.validFieldId(model);
 
 		this.validAccessControl(model);
@@ -100,7 +100,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/delete")
 	public T delete(@RequestBody T model) {
-		
+
 		this.validFieldId(model);
 
 		this.validAccessControl(model);
@@ -156,7 +156,10 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	private void validFieldId(T model) {
-		this.validFields(new HashMap<>().put("id", model.getId()));
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", model.getId());
+
+		this.validFields(map);
 
 	}
 
