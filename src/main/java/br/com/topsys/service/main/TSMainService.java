@@ -22,7 +22,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/get")
 	public T get(@RequestBody T model) {
 
-		this.validFieldId(model);
+		this.validFieldId("id",model.getId());
 
 		this.validAccessControl(model);
 
@@ -31,9 +31,9 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/get-history")
 	public T getHistory(@RequestBody T model) {
-
-		this.validFieldId(model);
-
+         
+		this.validFieldId("idHistory",model.getIdHistorico());
+		
 		this.validAccessControl(model);
 
 		return this.getRepository().getHistory(model);
@@ -50,7 +50,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/find-history")
 	public List<T> findHistory(@RequestBody T model) {
 
-		this.validFieldId(model);
+		this.validFieldId("id",model.getId());
 
 		this.validAccessControl(model);
 
@@ -60,7 +60,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/find-lazy")
 	public List<T> find(@RequestBody TSLazyModel<T> lazyModel) {
 
-		this.validAccessControl(lazyModel);
+		this.validAccessControl(lazyModel.getModel());
 
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
@@ -88,7 +88,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
 
-		this.validFieldId(model);
+		this.validFieldId("id",model.getId());
 
 		this.validAccessControl(model);
 
@@ -101,7 +101,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/delete")
 	public T delete(@RequestBody T model) {
 
-		this.validFieldId(model);
+		this.validFieldId("id",model.getId());
 
 		this.validAccessControl(model);
 
@@ -154,22 +154,20 @@ public abstract class TSMainService<T extends TSMainModel> {
 				(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
 		this.validFields(map);
 	}
-	
-	
+
 	protected void validAutoComplete(String field, int min) {
 		if (TSUtil.isEmpty(field) || field.length() < min) {
-			throw new TSApplicationException("AutoComplete: é necessário ao menos %d caracteres".formatted(min), TSType.ERROR);
+			throw new TSApplicationException("AutoComplete: é necessário ao menos %d caracteres".formatted(min),
+					TSType.ERROR);
 		}
 	}
 
-	private void validFieldId(T model) {
+	private void validFieldId(String nome, Long id) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("id", model.getId());
+		map.put(nome, id);
 
 		this.validFields(map);
 
 	}
-	
-	
 
 }
