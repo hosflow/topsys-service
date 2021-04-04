@@ -154,6 +154,13 @@ public abstract class TSMainService<T extends TSMainModel> {
 				(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
 		this.validFields(map);
 	}
+	
+	
+	protected void validAutoComplete(String field, int min) {
+		if (TSUtil.isEmpty(field) || field.length() < min) {
+			throw new TSApplicationException("AutoComplete: é necessário ao menos %d caracteres".formatted(min), TSType.ERROR);
+		}
+	}
 
 	private void validFieldId(T model) {
 		Map<String, Object> map = new HashMap<>();
@@ -162,5 +169,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		this.validFields(map);
 
 	}
+	
+	
 
 }
