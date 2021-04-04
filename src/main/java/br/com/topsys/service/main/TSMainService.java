@@ -32,7 +32,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/get-history")
 	public T getHistory(@RequestBody T model) {
          
-		this.validFieldId("idHistory",model.getIdHistorico());
+		this.validFieldId("idHistorico",model.getIdHistorico());
 		
 		this.validAccessControl(model);
 
