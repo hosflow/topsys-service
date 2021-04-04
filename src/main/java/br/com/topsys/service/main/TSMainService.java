@@ -22,6 +22,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/get")
 	public T get(@RequestBody T model) {
 
+		this.validFieldId(model);
+
 		this.validAccessControl(model);
 
 		return this.getRepository().get(model);
@@ -29,6 +31,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/get-history")
 	public T getHistory(@RequestBody T model) {
+
+		this.validFieldId(model);
 
 		this.validAccessControl(model);
 
@@ -46,6 +50,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = "/find-history")
 	public List<T> findHistory(@RequestBody T model) {
 
+		this.validFieldId(model);
+
 		this.validAccessControl(model);
 
 		return this.getRepository().findHistory(model);
@@ -61,7 +67,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/rowcount")
 	public Integer rowCount(@RequestBody T model) {
-		
+
 		this.validAccessControl(model);
 
 		return this.getRepository().rowCount(model);
@@ -81,6 +87,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/update")
 	public T update(@RequestBody @Valid T model) {
+		
+		this.validFieldId(model);
 
 		this.validAccessControl(model);
 
@@ -92,6 +100,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PostMapping(value = "/delete")
 	public T delete(@RequestBody T model) {
+		
+		this.validFieldId(model);
 
 		this.validAccessControl(model);
 
@@ -143,6 +153,11 @@ public abstract class TSMainService<T extends TSMainModel> {
 		map.put("controleAcesso.origemId",
 				(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
 		this.validFields(map);
+	}
+
+	private void validFieldId(T model) {
+		this.validFields(new HashMap<>().put("id", model.getId()));
+
 	}
 
 }
