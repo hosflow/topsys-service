@@ -1,6 +1,7 @@
 package br.com.topsys.service.exception;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -86,9 +87,13 @@ public class TSServiceException {
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date())
-				.message("Campos obrigatórios!").build(),
+				.message("Campos obrigatórios: [" + ex.getFieldErrors().stream().map(e -> e.getField()).collect(Collectors.joining(", ")) +"]")
+				.build(),
 				HttpStatus.BAD_REQUEST);
 
+		
+		
+		
 	}
 
 }
