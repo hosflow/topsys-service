@@ -63,6 +63,18 @@ public abstract class TSJdbcRepository {
 		}
 
 	}
+	
+	protected Object queryForObject(String sql, Class<?> classe, Object... args) throws DataAccessException {
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
+		try {
+			return this.getDAO().queryForObject(sql, classe, args);
+		} finally {
+			tsLog.end();
+		}
+
+	}
+
 
 	protected int update(String sql, Object... args) throws DataAccessException {
 		TSLog tsLog = new TSLog(sql, args);
@@ -85,5 +97,6 @@ public abstract class TSJdbcRepository {
 			tsLog.end();
 		}
 	}
+	
 
 }
