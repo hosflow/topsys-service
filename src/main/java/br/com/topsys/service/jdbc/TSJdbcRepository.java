@@ -47,6 +47,8 @@ public abstract class TSJdbcRepository {
 		tsLog.begin();
 		try {
 			return getDAO().queryForObject(sql, Integer.class, args);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 		} finally {
 			tsLog.end();
 		}
@@ -58,6 +60,8 @@ public abstract class TSJdbcRepository {
 		tsLog.begin();
 		try {
 			return this.getDAO().queryForObject(sql, rowMapper, args);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 		} finally {
 			tsLog.end();
 		}
@@ -69,6 +73,8 @@ public abstract class TSJdbcRepository {
 		tsLog.begin();
 		try {
 			return this.getDAO().queryForObject(sql, classe, args);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 		} finally {
 			tsLog.end();
 		}
