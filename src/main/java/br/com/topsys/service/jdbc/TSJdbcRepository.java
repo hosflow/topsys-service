@@ -68,7 +68,7 @@ public abstract class TSJdbcRepository {
 
 	}
 	
-	protected Object queryForObject(String sql, Class<?> classe, Object... args) throws DataAccessException {
+	protected <T> T queryForObject(String sql, Class<T> classe, Object... args) throws DataAccessException {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
