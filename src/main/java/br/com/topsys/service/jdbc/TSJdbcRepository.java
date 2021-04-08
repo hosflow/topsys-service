@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -55,7 +54,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+	protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -67,8 +66,8 @@ public abstract class TSJdbcRepository {
 		}
 
 	}
-	
-	protected <T> T queryForObject(String sql, Class<T> classe, Object... args) throws DataAccessException {
+
+	protected <T> T queryForObject(String sql, Class<T> classe, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -81,8 +80,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-
-	protected int update(String sql, Object... args) throws DataAccessException {
+	protected int update(String sql, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -92,7 +90,7 @@ public abstract class TSJdbcRepository {
 		}
 	}
 
-	protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) throws DataAccessException {
+	protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -103,6 +101,5 @@ public abstract class TSJdbcRepository {
 			tsLog.end();
 		}
 	}
-	
 
 }
