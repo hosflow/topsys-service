@@ -102,4 +102,16 @@ public abstract class TSJdbcRepository {
 		}
 	}
 
+	protected <T> List<T> queryForList(String sql, Class<T> classe, Object... args) {
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
+		try {
+			return this.getDAO().queryForList(sql, classe, args);
+		} catch (EmptyResultDataAccessException e) {
+			return Collections.emptyList();
+		} finally {
+			tsLog.end();
+		}
+	}
+
 }
