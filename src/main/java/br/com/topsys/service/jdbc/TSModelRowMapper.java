@@ -6,7 +6,6 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -43,10 +42,6 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
 
-				}else if(Types.TIME_WITH_TIMEZONE == column) {
-					
-					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetTime.class));
-					
 				} else if (Types.DATE == column) {
 
 					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDate.class));
