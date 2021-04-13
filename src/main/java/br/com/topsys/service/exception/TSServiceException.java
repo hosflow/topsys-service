@@ -3,6 +3,7 @@ package br.com.topsys.service.exception;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -59,16 +60,16 @@ public class TSServiceException {
 
 	}
 
-	/*@ExceptionHandler(DataIntegrityViolationException.class)
+	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
 		
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date())
-				.message("Integridade violada ou existem registros dependentes!").build(),
+				.message("Tem registro dependente: "+ ex.getMessage()).build(),
 				HttpStatus.BAD_REQUEST);
 
-	}*/
+	}
 
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleException(EmptyResultDataAccessException ex) {
