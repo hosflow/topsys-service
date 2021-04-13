@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
+import br.com.topsys.base.util.TSUtil;
 
 
 @RestControllerAdvice
@@ -66,7 +67,9 @@ public class TSServiceException {
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date())
-				.message("Tem registro dependente: "+ ex.getMessage()).build(),
+				.message("Tem registro dependente!")
+				.trace(this.getMessageError(ex.getMessage()))
+				.build(),
 				HttpStatus.BAD_REQUEST);
 
 	}
@@ -91,9 +94,11 @@ public class TSServiceException {
 				.message("Campos obrigatórios: [" + ex.getFieldErrors().stream().map(e -> e.getField()).collect(Collectors.joining(", ")) +"]")
 				.build(),
 				HttpStatus.BAD_REQUEST);
-
 		
-		
+	}
+	
+	private String getMessageError(String message) {
+		return !TSUtil.isEmpty(message) ? message.substring(message.indexOf("ERROR:"),message.indexOf("constraint")) : "";
 		
 	}
 
