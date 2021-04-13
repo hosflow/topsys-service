@@ -67,7 +67,7 @@ public class TSServiceException {
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date())
-				.message("Tem registro dependente!")
+				.message("Integridade violada, verifique o trace!")
 				.trace(this.getMessageError(ex.getMessage()))
 				.build(),
 				HttpStatus.BAD_REQUEST);
