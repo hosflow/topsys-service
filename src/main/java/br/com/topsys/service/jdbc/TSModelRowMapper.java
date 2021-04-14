@@ -12,6 +12,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.jdbc.core.RowMapper;
 
+import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.util.TSCryptoUtil;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
@@ -29,6 +30,13 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 	public T mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 		T objeto = BeanUtils.instantiateClass(classe);
+		
+		try {
+			
+			objeto.getClass().getMethod("build").invoke(objeto);
+			
+		} catch (Exception e) {}
+		
 		BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
 		wrapper.setAutoGrowNestedPaths(true);
 
