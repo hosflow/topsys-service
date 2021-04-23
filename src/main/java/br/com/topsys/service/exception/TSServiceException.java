@@ -32,7 +32,8 @@ public class TSServiceException {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-				.message(ERRO_INTERNO).build(),
+				.message(ERRO_INTERNO)
+				.trace(ex.getMessage()).build(),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
