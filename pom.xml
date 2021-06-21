@@ -9,21 +9,7 @@
 
 
 	<description>TopSys IT Solutions - SERVICE</description>
-	<url>http://maven.apache.org</url>
-
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses> 
-
-	<scm>
-		<url>https://svn.apache.org/viewvc/maven</url>
-	</scm>
-
-
+		
 	<properties>
 		<java.version>15</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
