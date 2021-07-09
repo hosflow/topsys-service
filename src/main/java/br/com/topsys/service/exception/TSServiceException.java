@@ -81,7 +81,7 @@ public class TSServiceException {
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.NOT_FOUND.value())
 				.timestamp(new Date())
-				.message("Não retornou nenhum registro!").build(),
+				.message("Nenhum registro encontrado!").build(),
 				HttpStatus.NOT_FOUND);
 
 	}
