@@ -6,13 +6,13 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.jdbc.core.RowMapper;
 
-import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.util.TSCryptoUtil;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
@@ -28,7 +28,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 	@Override
 	public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-
+	
 		T objeto = BeanUtils.instantiateClass(classe);
 		
 		try {
@@ -39,25 +39,27 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		
 		BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
 		wrapper.setAutoGrowNestedPaths(true);
-
+	
 		if (parametros != null) {
-
+	
 			for (int x = 0; x < parametros.length; x++) {
-
+	
 				int column = rs.getMetaData().getColumnType(x + 1);
-
+	
 				if (Types.TIMESTAMP_WITH_TIMEZONE == column || Types.TIMESTAMP == column) {
 					
-					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1));
-
+					if(rs.getTimestamp(x + 1) != null) {
+						wrapper.setPropertyValue(parametros[x], OffsetDateTime.ofInstant(rs.getTimestamp(x + 1).toInstant(), ZoneId.of("UTC")));
+					}
+					
 				} else if (Types.DATE == column) {
-
+	
 					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalDate.class));
-
+	
 				} else if (Types.TIME == column) {
-
+	
 					wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, LocalTime.class));
-
+	
 				} else {
 					if(parametros[x].startsWith(DECRYPT)) {
 						wrapper.setPropertyValue(parametros[x].replace(DECRYPT,""),TSCryptoUtil.decrypt(rs.getObject(x + 1)));
@@ -66,13 +68,13 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 					} 
 					
 				}
-
+	
 			}
-
+	
 		}
-
+	
 		return objeto;
-
+	
 	}
 
 }
