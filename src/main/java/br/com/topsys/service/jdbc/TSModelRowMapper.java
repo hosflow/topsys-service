@@ -49,7 +49,9 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 				if (Types.TIMESTAMP_WITH_TIMEZONE == column || Types.TIMESTAMP == column) {
 					
 					if(rs.getTimestamp(x + 1) != null) {
-						wrapper.setPropertyValue(parametros[x], OffsetDateTime.ofInstant(rs.getTimestamp(x + 1).toInstant(), ZoneId.of("UTC")));
+						
+						wrapper.setPropertyValue(parametros[x], OffsetDateTime.ofInstant(rs.getTimestamp(x + 1).toInstant(), ZoneId.systemDefault()));
+						
 					}
 					
 				} else if (Types.DATE == column) {
