@@ -7,13 +7,17 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.jdbc.core.RowMapper;
 
+import br.com.topsys.base.model.TSDynamicModel;
 import br.com.topsys.base.util.TSCryptoUtil;
+import br.com.topsys.base.util.TSUtil;
+import ch.qos.logback.core.subst.Tokenizer;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
@@ -39,8 +43,28 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		
 		BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(objeto);
 		wrapper.setAutoGrowNestedPaths(true);
+		
+		if(objeto instanceof TSDynamicModel) {
+
+			for (int x = 0; x < rs.getMetaData().getColumnCount(); x++) {
+				
+				String values = rs.getString(x);
+				
+				values = values.substring(1,values.lastIndexOf("}"));
+				
+				StringTokenizer tokenizer = new StringTokenizer(values,",");
+				
+				while(tokenizer.hasMoreTokens()) {
+					wrapper.setPropertyValue("add", tokenizer.nextElement());
+				}
+				
+				
+			}
+			
+			
+		}else if (parametros != null) {
 	
-		if (parametros != null) {
+		
 	
 			for (int x = 0; x < parametros.length; x++) {
 	
@@ -78,5 +102,5 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 		return objeto;
 	
 	}
-
+	
 }
