@@ -48,7 +48,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 			for (int x = 0; x < rs.getMetaData().getColumnCount(); x++) {
 				
-				String values = rs.getString(x);
+				String values = rs.getString(x+1);
 				
 				values = values.substring(1,values.lastIndexOf("}"));
 				
