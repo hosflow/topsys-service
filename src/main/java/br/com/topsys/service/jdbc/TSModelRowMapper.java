@@ -19,6 +19,8 @@ import br.com.topsys.base.model.TSAttributeModel;
 import br.com.topsys.base.model.TSColumnModel;
 import br.com.topsys.base.model.TSDynamicModel;
 import br.com.topsys.base.util.TSCryptoUtil;
+import br.com.topsys.base.util.TSStringUtil;
+import br.com.topsys.base.util.TSUtil;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
@@ -54,13 +56,11 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 				values = values.substring(1, values.lastIndexOf("}"));
 
-				StringTokenizer tokenizer = new StringTokenizer(values, ",");
-
 				TSColumnModel columnModel = new TSColumnModel();
+ 
+				for(String value : values.split(",")) {
 
-				while (tokenizer.hasMoreTokens()) {
-
-					columnModel.addAttribute("" + tokenizer.nextElement());
+					columnModel.addAttribute(value);
 
 				}
 
