@@ -16,8 +16,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import br.com.topsys.base.model.TSDynamicModel;
 import br.com.topsys.base.util.TSCryptoUtil;
-import br.com.topsys.base.util.TSUtil;
-import ch.qos.logback.core.subst.Tokenizer;
 
 public class TSModelRowMapper<T> implements RowMapper<T> {
 
@@ -55,7 +53,12 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 				StringTokenizer tokenizer = new StringTokenizer(values,",");
 				
 				while(tokenizer.hasMoreTokens()) {
-					wrapper.setPropertyValue("add", tokenizer.nextElement());
+					try {
+						objeto.getClass().getMethod("add",String.class).invoke(objeto,tokenizer.nextElement());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 				}
 				
 				
