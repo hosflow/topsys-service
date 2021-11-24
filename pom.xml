@@ -11,15 +11,16 @@
 	<description>TopSys IT Solutions - SERVICE</description>
 
 	<properties>
-		<java.version>15</java.version>
+		<java.version>17</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>15</maven.compiler.source>
-		<maven.compiler.target>15</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<lombok.version>1.18.20</lombok.version>
 		<beanutils.version>1.9.4</beanutils.version>
 		<topsys.version>2.0</topsys.version>
 		<spring.boot.version>2.4.2</spring.boot.version>
 		<maven.source.version>3.2.0</maven.source.version>
-		<lombok.version>1.18.18</lombok.version>
+		
 	</properties>
 
 	<dependencies>
