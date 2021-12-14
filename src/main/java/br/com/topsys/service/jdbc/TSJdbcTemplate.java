@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class TSJdbcTemplate extends TSJdbcRepository {
+public class TSJdbcTemplate extends TSJdbcRepository {
 
 	
 	public void setDataSource(DataSource dataSource) {
