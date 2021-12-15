@@ -13,6 +13,7 @@ public class TSJdbcTemplate extends TSJdbcRepository {
 	}
 	
 	public TSJdbcTemplate(DataSource dataSource) {
+		super();
 		super.getDAO().setDataSource(dataSource);
 	}
 	
