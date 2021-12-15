@@ -3,6 +3,8 @@ package br.com.topsys.service.jdbc;
 import java.util.Collections;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,7 +35,10 @@ public abstract class TSJdbcRepository {
 		return this.dao;
 	}
 	
-	
+	protected void setDataSource(DataSource dataSource) {
+		this.getDAO().setDataSource(dataSource);
+	}
+		
 
 	public Long getSequence(String nome) {
 		StringBuilder builder = new StringBuilder();
