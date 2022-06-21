@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.topsys.base.constant.Endpoint;
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSLazyModel;
 import br.com.topsys.base.model.TSMainModel;
@@ -19,7 +20,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	protected abstract TSMainRepository<T> getRepository();
 
-	@PostMapping(value = "/get")
+	@PostMapping(value = Endpoint.GET)
 	public T get(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());
@@ -29,7 +30,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().get(model);
 	}
 
-	@PostMapping(value = "/get-history")
+	@PostMapping(value = Endpoint.GET_HISTORY)
 	public T getHistory(@RequestBody T model) {
          
 		this.validFieldId("idHistorico",model.getIdHistorico());
@@ -39,7 +40,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().getHistory(model);
 	}
 
-	@PostMapping(value = "/find")
+	@PostMapping(value = Endpoint.FIND)
 	public List<T> find(@RequestBody T model) {
 
 		this.validAccessControl(model);
@@ -47,7 +48,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().find(model);
 	}
 
-	@PostMapping(value = "/find-history")
+	@PostMapping(value = Endpoint.FIND_HISTORY)
 	public List<T> findHistory(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());
@@ -57,7 +58,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().findHistory(model);
 	}
 
-	@PostMapping(value = "/find-lazy")
+	@PostMapping(value = Endpoint.FIND_LAZY)
 	public List<T> find(@RequestBody TSLazyModel<T> lazyModel) {
 
 		this.validAccessControl(lazyModel.getModel());
@@ -65,7 +66,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
 
-	@PostMapping(value = "/rowcount")
+	@PostMapping(value = Endpoint.ROWCOUNT)
 	public Integer rowCount(@RequestBody T model) {
 
 		this.validAccessControl(model);
@@ -74,7 +75,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PostMapping(value = "/insert")
+	@PostMapping(value = Endpoint.INSERT)
 	public T insert(@RequestBody @Valid T model) {
 
 		this.validAccessControl(model);
@@ -85,7 +86,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PostMapping(value = "/update")
+	@PostMapping(value = Endpoint.UPDATE)
 	public T update(@RequestBody @Valid T model) {
 
 		this.validFieldId("id",model.getId());
@@ -98,7 +99,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PostMapping(value = "/delete")
+	@PostMapping(value = Endpoint.DELETE)
 	public T delete(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());
