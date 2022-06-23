@@ -30,12 +30,8 @@ public final class TSTokenService {
 
 		TSSecurityModel model = (TSSecurityModel) authentication.getPrincipal();
 
-		ObjectMapper objectMapper = getObjectMapper();
-
 		try {
-			String usuarioJson = objectMapper.writeValueAsString(model);
-
-			return Jwts.builder().setIssuer("TopSys IT Solutions").setClaims(Jwts.claims().setSubject(usuarioJson))
+			return Jwts.builder().setIssuer("TopSys IT Solutions").setClaims(Jwts.claims().setSubject(model.getLogin()))
 					.setIssuedAt(new Date())
 					.setExpiration(new Date(new Date().getTime() + TSParseUtil.stringToLong(expiration)))
 					.signWith(SignatureAlgorithm.HS256, this.secret).compact();
