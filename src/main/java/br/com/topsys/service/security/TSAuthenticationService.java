@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.topsys.base.model.TSSecurityModel;
 
 @Service
-public final class TSAuthenticationService {
+public class TSAuthenticationService {
 
 	
 	@Autowired

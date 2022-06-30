@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import br.com.topsys.base.util.TSUtil;
 
 @Component
-public final class TSLog {
+public class TSLog {
 
 	private static final String DATA_HORA_MINUTOS = "dd/MM/yyyy HH:mm:ss";
 	private static final String DATA = "dd-MM-yyyy";

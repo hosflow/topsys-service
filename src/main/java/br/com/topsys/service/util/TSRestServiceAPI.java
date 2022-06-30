@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 @Component
-public final class TSRestServiceAPI {
+public class TSRestServiceAPI {
 
 	private static final String NAO_PODE_SER_NULO = "O objeto passado por parâmetro do método post não pode ser nulo!";
 	

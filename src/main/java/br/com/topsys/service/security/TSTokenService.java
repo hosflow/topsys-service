@@ -18,7 +18,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public final class TSTokenService {
+public class TSTokenService {
 
 	@Value("${topsys.jwt.expiration}")
 	private String expiration;
