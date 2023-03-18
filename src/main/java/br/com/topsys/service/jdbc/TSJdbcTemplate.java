@@ -1,6 +1,5 @@
 package br.com.topsys.service.jdbc;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ public class TSJdbcTemplate extends TSJdbcRepository {
 		this.dataSource = dataSource;
 	}
 	
-	@PostConstruct
+	@jakarta.annotation.PostConstruct
 	public void init() {
 		super.getDAO().setDataSource(dataSource);
 	}
