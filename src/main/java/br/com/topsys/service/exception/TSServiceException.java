@@ -17,7 +17,6 @@ import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
 import br.com.topsys.base.util.TSUtil;
-import io.sentry.Sentry;
 
 
 @RestControllerAdvice
@@ -31,7 +30,6 @@ public class TSServiceException {
 		
 		ex.printStackTrace();
 
-		Sentry.captureException(ex); 
 		
 		return new ResponseEntity<>(TSResponseExceptionModel.builder()
 				.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
