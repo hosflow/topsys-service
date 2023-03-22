@@ -17,6 +17,8 @@ import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
 import br.com.topsys.base.util.TSUtil;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 
 
 @RestControllerAdvice
@@ -98,6 +100,27 @@ public class TSServiceException {
 				HttpStatus.BAD_REQUEST);
 		
 	}
+	
+
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<?> handleException404() {
+
+		return ResponseEntity.notFound().build();
+		
+	}
+	
+	
+	@ExceptionHandler(EntityExistsException.class)
+	public ResponseEntity<?> handleExceptionExists() {
+
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder().message("Já existe esse registro!"));
+		
+	}
+
+	
+	
+	
 	
 	private String getMessageError(String message) {
 		return !TSUtil.isEmpty(message) ? message.substring(message.indexOf("ERROR:"),message.indexOf("constraint")) : "";
