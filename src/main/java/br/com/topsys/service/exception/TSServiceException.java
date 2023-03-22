@@ -117,6 +117,13 @@ public class TSServiceException {
 		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder().message("Já existe esse registro!"));
 		
 	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<?> handleDataIntegrityViolationExceptio() {
+		
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder().message("Já existe esse registro!"));
+
+	}
 
 	
 	
