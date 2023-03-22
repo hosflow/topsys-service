@@ -65,18 +65,6 @@ public class TSServiceException {
 
 	}
 
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
-		
-		return new ResponseEntity<>(TSResponseExceptionModel.builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(new Date())
-				.message("Integridade violada, verifique o trace!")
-				.trace(this.getMessageError(ex.getMessage()))
-				.build(),
-				HttpStatus.BAD_REQUEST);
-
-	}
 
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleException(EmptyResultDataAccessException ex) {
