@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
-import br.com.topsys.base.util.TSUtil;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -106,10 +105,5 @@ public class TSServiceException {
 	 * 
 	 */
 
-	private String getMessageError(String message) {
-		return !TSUtil.isEmpty(message) ? message.substring(message.indexOf("ERROR:"), message.indexOf("constraint"))
-				: "";
-
-	}
 
 }
