@@ -32,7 +32,7 @@ public class TSJpaServiceException {
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Object> handleException404() {
+	public ResponseEntity<Object> handleException404(EntityNotFoundException exception) {
 
 		return ResponseEntity.notFound().build();
 
@@ -77,15 +77,7 @@ public class TSJpaServiceException {
 	public ResponseEntity<Object> handleExceptionAcessoNegado() {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
 	}
-	
-
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleException500(Exception ex) {
-		ex.printStackTrace();
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());
-	}
-	
-	
+		
 	
 
 	private record ErroValidacao(String field, String message) {
