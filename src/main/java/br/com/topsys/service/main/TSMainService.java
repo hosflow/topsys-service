@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,6 +20,9 @@ import br.com.topsys.base.util.TSUtil;
 public abstract class TSMainService<T extends TSMainModel> {
 
 	protected abstract TSMainRepository<T> getRepository();
+	
+	@Value("${topsys.service.isservice}")
+	private boolean isService = false;
 
 	@PostMapping(value = Endpoint.GET)
 	public T get(@RequestBody T model) {
@@ -148,12 +152,16 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	protected void validAccessControl(TSMainModel model) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("controleAcesso.usuarioFuncaoId",
-				(model.getControleAcesso() == null ? null : model.getControleAcesso().getUsuarioFuncaoId()));
-		map.put("controleAcesso.origemId",
-				(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
-		this.validFields(map);
+		if(isService) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("controleAcesso.usuarioFuncaoId",
+					(model.getControleAcesso() == null ? null : model.getControleAcesso().getUsuarioFuncaoId()));
+			map.put("controleAcesso.origemId",
+					(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
+			this.validFields(map);
+		}
+		
+		
 	}
 
 	protected void validAutoComplete(String field, int min) {
