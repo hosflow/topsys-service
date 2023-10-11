@@ -3,6 +3,9 @@ package br.com.topsys.service.exception;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,8 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 @Component

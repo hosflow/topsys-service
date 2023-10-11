@@ -2,6 +2,8 @@ package br.com.topsys.service.exception;
 
 import java.util.Date;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import br.com.topsys.base.model.TSResponseExceptionModel;
-import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 @Component
@@ -53,32 +54,26 @@ public class TSJpaServiceException {
 		return ResponseEntity.badRequest().build();
 
 	}
-	
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<Object> handleException400(HttpMessageNotReadableException ex) {
 		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
-	
 
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<Object> handleExceptionBadCredentials() {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
 	}
-	
 
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<Object> handleExceptionAuthentication() {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falha na autenticação");
 	}
-	
 
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<Object> handleExceptionAcessoNegado() {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado");
 	}
-		
-	
 
 	private record ErroValidacao(String field, String message) {
 		public ErroValidacao(FieldError fieldError) {
