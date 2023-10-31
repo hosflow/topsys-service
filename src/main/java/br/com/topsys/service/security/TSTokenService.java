@@ -1,21 +1,20 @@
 package br.com.topsys.service.security;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import br.com.topsys.base.exception.TSSystemException;
+
 import br.com.topsys.base.model.TSSecurityModel;
-import br.com.topsys.base.util.TSParseUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class TSTokenService {
@@ -26,58 +25,73 @@ public class TSTokenService {
 	@Value("${topsys.jwt.secret}")
 	private String secret;
 
+	/*
+	 * public Boolean isTokenValid(String token) { try {
+	 * JWT.parser().setSigningKey(this.secret).parseClaimsJws(token); return true; }
+	 * catch (Exception e) { return false; } }
+	 */
+
 	public String generateToken(Authentication authentication) {
 
 		TSSecurityModel model = (TSSecurityModel) authentication.getPrincipal();
-
 		try {
-			return Jwts.builder().setIssuer("TopSys IT Solutions").setClaims(Jwts.claims().setSubject(model.getLogin()))
-					.setIssuedAt(new Date())
-					.setExpiration(new Date(new Date().getTime() + TSParseUtil.stringToLong(expiration)))
-					.signWith(SignatureAlgorithm.HS256, this.secret).compact();
+			var algorithm = Algorithm.HMAC256(secret);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(model.getLogin())
+					.withClaim("id", model.getId()).withClaim("origemId", model.getOrigemId())
+					.withClaim("token", model.getToken())
+					// .withClaim("permissoes", "xxxxxx" )
+					.withExpiresAt(expiracao(expiration)).sign(algorithm);
+
+		} catch (JWTCreationException exception) {
+			throw new RuntimeException("Erro ao gerar o token jwt", exception);
 		}
 
 	}
 
-	public Boolean isTokenValid(String token) {
+	/*
+	 * public String generateRefreshToken(Usuario usuario) { try {
+	 * 
+	 * var algorithm = Algorithm.HMAC256(SECRET);
+	 * 
+	 * return JWT.create() .withIssuer("TopSys IT Solutions")
+	 * .withSubject(model.getLogin()) .withClaim("id", model.getId())
+	 * .withClaim("origemId", model.getOrigemId()) .withClaim("token",
+	 * model.getToken()) .withExpiresAt(expiracao(expiration)) .sign(algorithm);
+	 * 
+	 * } catch (JWTCreationException exception){ throw new
+	 * RuntimeException("Erro ao gerar o refresh token jwt", exception); } }
+	 */
+
+	public String getSubject(String tokenJwt) {
 		try {
-			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
-			return true;
-		} catch (Exception e) {
-			return false;
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			return JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(tokenJwt).getSubject();
+
+		} catch (JWTVerificationException exception) {
+			throw new RuntimeException("Token JWT inválido ou expirado!", exception);
 		}
 	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public TSSecurityModel getUserModel(String token, Class classe) {
-
-		Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-
-		ObjectMapper objectMapper = getObjectMapper();
-
-		TSSecurityModel userModel = null;
+	
+	public String getClaim(String tokenJwt, String claim) {
 		try {
-			userModel = (TSSecurityModel) objectMapper.readValue(claims.getSubject(), classe);
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(tokenJwt).getClaim(claim);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new TSSystemException(e);
-
+			if(!claimAux.isNull()) {
+				return claimAux.toString();
+			}
+			
+		} catch (JWTVerificationException exception) {
+			throw new RuntimeException("Token JWT inválido ou expirado!", exception);
 		}
-
-		return userModel;
-
+		
+		return null;
 	}
 
-	private ObjectMapper getObjectMapper() {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setSerializationInclusion(Include.NON_NULL);
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		return objectMapper;
+	private Instant expiracao(String minutes) {
+
+		return LocalDateTime.now().plusMinutes(Integer.getInteger(minutes)).toInstant(ZoneOffset.of("-03:00"));
 	}
 
 }

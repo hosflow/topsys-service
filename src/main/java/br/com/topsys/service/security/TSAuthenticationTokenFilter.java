@@ -11,55 +11,48 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.topsys.base.model.TSSecurityModel;
-import br.com.topsys.base.util.TSUtil;
-
 public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 
 	private TSTokenService tokenService;
-	
-	private Class securityModel;
-	
-	public TSAuthenticationTokenFilter(TSTokenService tokenService, Class model) {
+
+	public TSAuthenticationTokenFilter(TSTokenService tokenService) {
 		this.tokenService = tokenService;
-		this.securityModel = model;
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
-		String token = getToken(request);
-		
-		if(this.tokenService.isTokenValid(token).booleanValue()) {
-			authenticateWithToken(token);
-		}
+
+		var token = getToken(request);
+
+		authenticateWithToken(token);
 
 		filterChain.doFilter(request, response);
 
 	}
-	
+
 	private void authenticateWithToken(String token) {
-		
-		TSSecurityModel usuarioModel = this.tokenService.getUserModel(token, this.securityModel);
-		
-		if(usuarioModel != null) {
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioModel,usuarioModel.getLogin(),null);
-			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+		if (token != null) {
+			var subject = tokenService.getSubject(token);
+
+			var authentication = new UsernamePasswordAuthenticationToken(subject, null, null);
+
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
-		
-		
+
 	}
 
 	private String getToken(HttpServletRequest request) {
 
-		String token = request.getHeader("Authorization");
-		
-		if (TSUtil.isEmpty(token) || !token.startsWith("Bearer ")) {
-			return null;
+		var authorization = request.getHeader("Authorization");
+
+		if (authorization != null) {
+			return authorization.replace("Bearer ", "");
+
 		}
 
-		return token.substring(7, token.length());
+		return null;
 
 	}
 
