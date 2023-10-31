@@ -13,7 +13,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-
 import br.com.topsys.base.model.TSSecurityModel;
 
 @Service
@@ -25,11 +24,6 @@ public class TSTokenService {
 	@Value("${topsys.jwt.secret}")
 	private String secret;
 
-	/*
-	 * public Boolean isTokenValid(String token) { try {
-	 * JWT.parser().setSigningKey(this.secret).parseClaimsJws(token); return true; }
-	 * catch (Exception e) { return false; } }
-	 */
 
 	public String generateToken(Authentication authentication) {
 
@@ -79,7 +73,7 @@ public class TSTokenService {
 			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(tokenJwt).getClaim(claim);
 
 			if(!claimAux.isNull()) {
-				return claimAux.toString();
+				return claimAux.asString();
 			}
 			
 		} catch (JWTVerificationException exception) {
@@ -88,10 +82,26 @@ public class TSTokenService {
 		
 		return null;
 	}
+	
+	public Boolean isTokenValid(String token) {
+		try {
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+		
+			JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(token);
+			
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+
 
 	private Instant expiracao(String minutes) {
-
-		return LocalDateTime.now().plusMinutes(Integer.getInteger(minutes)).toInstant(ZoneOffset.of("-03:00"));
+         
+		return LocalDateTime.now().plusMinutes(Integer.parseInt(minutes)).toInstant(ZoneOffset.of("-03:00"));
 	}
+	
+
 
 }

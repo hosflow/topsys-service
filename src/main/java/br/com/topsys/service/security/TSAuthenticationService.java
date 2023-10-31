@@ -20,7 +20,7 @@ public class TSAuthenticationService {
 		UsernamePasswordAuthenticationToken authenticationToken = null;
 
 		if (model != null) {
-			authenticationToken = new UsernamePasswordAuthenticationToken(model.getLogin(), null);
+			authenticationToken = new UsernamePasswordAuthenticationToken(model,model.getLogin());
 
 			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			

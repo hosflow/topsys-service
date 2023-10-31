@@ -15,8 +15,11 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 
 	private TSTokenService tokenService;
 
-	public TSAuthenticationTokenFilter(TSTokenService tokenService) {
+	private Class securityModel;
+	
+	public TSAuthenticationTokenFilter(TSTokenService tokenService, Class model) {
 		this.tokenService = tokenService;
+		this.securityModel = model;
 	}
 
 	@Override
@@ -24,8 +27,10 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		var token = getToken(request);
-
-		authenticateWithToken(token);
+		
+		if(this.tokenService.isTokenValid(token).booleanValue()) {
+			authenticateWithToken(token);
+		}
 
 		filterChain.doFilter(request, response);
 
@@ -42,6 +47,19 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		}
 
 	}
+	
+	/*
+	private void authenticateWithToken(String token) {
+		
+		TSSecurityModel usuarioModel = this.tokenService.getUserModel(token, this.securityModel);
+		
+		if(usuarioModel != null) {
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioModel,usuarioModel.getLogin(),null);
+			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+		}
+		
+		
+	}*/
 
 	private String getToken(HttpServletRequest request) {
 
@@ -55,5 +73,6 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		return null;
 
 	}
+
 
 }
