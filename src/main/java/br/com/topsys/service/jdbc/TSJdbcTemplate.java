@@ -15,11 +15,11 @@ public class TSJdbcTemplate extends TSJdbcRepository {
 	}
 	
 	@PostConstruct
-	public void init() {
+	protected void init() {
 		super.getDAO().setDataSource(dataSource);
 	}
 	
-	public void setDataSource(DataSource dataSource) {
+	protected void setDataSource(DataSource dataSource) {
 		super.getDAO().setDataSource(dataSource);
 	}
 }

@@ -40,7 +40,7 @@ public abstract class TSJdbcRepository {
 	}
 		
 
-	public Long getSequence(String nome) {
+	protected Long getSequence(String nome) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT NEXTVAL('");
 		builder.append(nome);
@@ -48,7 +48,7 @@ public abstract class TSJdbcRepository {
 		return getDAO().queryForObject(builder.toString(), Long.class);
 	}
 
-	public Integer getRowCount(String sql, Object... args) {
+	protected Integer getRowCount(String sql, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -61,7 +61,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
+	protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -74,7 +74,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	public <T> T queryForObject(String sql, Class<T> classe, Object... args) {
+	protected <T> T queryForObject(String sql, Class<T> classe, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -87,7 +87,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	public int update(String sql, Object... args) {
+	protected int update(String sql, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -97,7 +97,7 @@ public abstract class TSJdbcRepository {
 		}
 	}
 
-	public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
+	protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -109,7 +109,7 @@ public abstract class TSJdbcRepository {
 		}
 	}
 
-	public <T> List<T> queryForList(String sql, Class<T> classe, Object... args) {
+	protected <T> List<T> queryForList(String sql, Class<T> classe, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
