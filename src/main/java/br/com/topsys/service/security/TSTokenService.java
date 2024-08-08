@@ -32,7 +32,8 @@ public class TSTokenService {
 			var algorithm = Algorithm.HMAC256(secret);
 
 			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(model.getLogin())
-					.withClaim("id", model.getId()).withClaim("origemId", model.getOrigemId())
+					.withClaim("id", model.getId())
+					.withClaim("origemId", model.getOrigemId())
 					.withClaim("token", model.getToken())
 					// .withClaim("permissoes", "xxxxxx" )
 					.withExpiresAt(expiracao(expiration)).sign(algorithm);

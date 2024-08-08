@@ -27,7 +27,7 @@ public abstract class TSJdbcRepository {
 	@Value("${topsys.jdbc.maxrows}")
 	private String maxRows;
 
-	protected JdbcTemplate getDAO() {
+	private JdbcTemplate getDAO() {
 		if (!TSUtil.isEmpty(this.maxRows)) {
 			this.dao.setMaxRows(TSParseUtil.stringToInteger(this.maxRows));
 		}
@@ -35,12 +35,12 @@ public abstract class TSJdbcRepository {
 		return this.dao;
 	}
 	
-	protected void setDataSource(DataSource dataSource) {
+	public void setDataSource(DataSource dataSource) {
 		this.getDAO().setDataSource(dataSource);
 	}
 		
 
-	protected Long getSequence(String nome) {
+	public Long getSequence(String nome) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT NEXTVAL('");
 		builder.append(nome);
@@ -48,7 +48,7 @@ public abstract class TSJdbcRepository {
 		return getDAO().queryForObject(builder.toString(), Long.class);
 	}
 
-	protected Integer getRowCount(String sql, Object... args) {
+	public Integer getRowCount(String sql, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -61,7 +61,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	protected <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
+	public <T> T queryForObject(String sql, RowMapper<T> rowMapper, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -74,7 +74,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	protected <T> T queryForObject(String sql, Class<T> classe, Object... args) {
+	public <T> T queryForObject(String sql, Class<T> classe, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -87,7 +87,7 @@ public abstract class TSJdbcRepository {
 
 	}
 
-	protected int update(String sql, Object... args) {
+	public int update(String sql, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -97,7 +97,7 @@ public abstract class TSJdbcRepository {
 		}
 	}
 
-	protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
+	public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
@@ -109,7 +109,7 @@ public abstract class TSJdbcRepository {
 		}
 	}
 
-	protected <T> List<T> queryForList(String sql, Class<T> classe, Object... args) {
+	public <T> List<T> queryForList(String sql, Class<T> classe, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
