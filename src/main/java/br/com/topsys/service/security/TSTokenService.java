@@ -35,7 +35,24 @@ public class TSTokenService {
 					.withClaim("id", model.getId())
 					.withClaim("origemId", model.getOrigemId())
 					.withClaim("token", model.getToken())
-					// .withClaim("permissoes", "xxxxxx" )
+					.withExpiresAt(expiracao(expiration)).sign(algorithm);
+
+		} catch (JWTCreationException exception) {
+			throw new RuntimeException("Erro ao gerar o token jwt", exception);
+		}
+
+	}
+	
+	public String generateToken(TSSecurityModel securityModel) {
+
+		
+		try {
+			var algorithm = Algorithm.HMAC256(secret);
+
+			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
+					.withClaim("id", securityModel.getId())
+					.withClaim("origemId", securityModel.getOrigemId())
+					.withClaim("token", securityModel.getToken())
 					.withExpiresAt(expiracao(expiration)).sign(algorithm);
 
 		} catch (JWTCreationException exception) {

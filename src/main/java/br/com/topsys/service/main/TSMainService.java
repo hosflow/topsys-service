@@ -7,7 +7,10 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.topsys.base.constant.Endpoint;
@@ -24,7 +27,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@Value("${topsys.service.isservice}")
 	private boolean isService = false;
 
-	@PostMapping(value = Endpoint.GET)
+	@GetMapping(value = Endpoint.GET)
 	public T get(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());
@@ -34,7 +37,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().get(model);
 	}
 
-	@PostMapping(value = Endpoint.GET_HISTORY)
+	@GetMapping(value = Endpoint.GET_HISTORY)
 	public T getHistory(@RequestBody T model) {
          
 		this.validFieldId("idHistorico",model.getIdHistorico());
@@ -70,7 +73,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
 
-	@PostMapping(value = Endpoint.ROWCOUNT)
+	@GetMapping(value = Endpoint.ROWCOUNT)
 	public Integer rowCount(@RequestBody T model) {
 
 		this.validAccessControl(model);
@@ -90,7 +93,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PostMapping(value = Endpoint.UPDATE)
+	@PutMapping(value = Endpoint.UPDATE)
 	public T update(@RequestBody @Valid T model) {
 
 		this.validFieldId("id",model.getId());
@@ -103,7 +106,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PostMapping(value = Endpoint.DELETE)
+	@DeleteMapping(value = Endpoint.DELETE)
 	public T delete(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());

@@ -2,26 +2,23 @@ package br.com.topsys.service.security;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 
 	private TSTokenService tokenService;
 
-	private Class securityModel;
-	
-	public TSAuthenticationTokenFilter(TSTokenService tokenService, Class model) {
+	public TSAuthenticationTokenFilter(TSTokenService tokenService) {
 		this.tokenService = tokenService;
-		this.securityModel = model;
 	}
 
 	@Override
@@ -29,8 +26,8 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		var token = getToken(request);
-		
-		if(this.tokenService.isTokenValid(token).booleanValue()) {
+
+		if (this.tokenService.isTokenValid(token).booleanValue()) {
 			authenticateWithToken(token);
 		}
 
@@ -49,19 +46,6 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		}
 
 	}
-	
-	/*
-	private void authenticateWithToken(String token) {
-		
-		TSSecurityModel usuarioModel = this.tokenService.getUserModel(token, this.securityModel);
-		
-		if(usuarioModel != null) {
-			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioModel,usuarioModel.getLogin(),null);
-			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-		}
-		
-		
-	}*/
 
 	private String getToken(HttpServletRequest request) {
 
@@ -75,6 +59,5 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		return null;
 
 	}
-
 
 }

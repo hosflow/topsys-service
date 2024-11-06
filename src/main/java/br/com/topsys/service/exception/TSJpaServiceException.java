@@ -2,8 +2,6 @@ package br.com.topsys.service.exception;
 
 import java.util.Date;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import br.com.topsys.base.model.TSResponseExceptionModel;
+import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
 @Component
