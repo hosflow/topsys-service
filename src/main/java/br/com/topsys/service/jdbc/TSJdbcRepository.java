@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,23 +31,14 @@ public abstract class TSJdbcRepository {
 		if (!TSUtil.isEmpty(this.maxRows)) {
 			this.dao.setMaxRows(TSParseUtil.stringToInteger(this.maxRows));
 		}
-	
+
 		return this.dao;
 	}
-	
+
 	public void setDataSource(DataSource dataSource) {
 		this.getDAO().setDataSource(dataSource);
 	}
-
 	
-	public void initDataSource(String url, String userName, String password) {
-		DataSource dataSource = DataSourceBuilder.create().url(url)
-														.username(userName)
-														.password(password)
-														.driverClassName("org.postgresql.Driver").build();
-		
-		this.setDataSource(dataSource);
-	}
 
 	public Long getSequence(String nome) {
 		StringBuilder builder = new StringBuilder();
