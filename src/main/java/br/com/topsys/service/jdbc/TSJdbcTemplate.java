@@ -22,15 +22,15 @@ public class TSJdbcTemplate extends TSJdbcRepository {
 	}
 	
 	
-	public static TSJdbcTemplate createInstance(String url, String userName, String password) {
-		DataSource dataSource = DataSourceBuilder.create()
+	public static DataSource createDataSource(String url, String userName, String password) {
+		return DataSourceBuilder.create()
 				.url(url)
 				.username(userName)
 				.password(password)
 				.driverClassName("org.postgresql.Driver")
 				.build();
 		 
-		return new TSJdbcTemplate(dataSource);
+		
 
 	}
 }

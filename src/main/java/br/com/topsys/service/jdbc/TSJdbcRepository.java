@@ -28,6 +28,7 @@ public abstract class TSJdbcRepository {
 	private String maxRows;
 
 	private JdbcTemplate getDAO() {
+
 		if (!TSUtil.isEmpty(this.maxRows)) {
 			this.dao.setMaxRows(TSParseUtil.stringToInteger(this.maxRows));
 		}
@@ -38,7 +39,6 @@ public abstract class TSJdbcRepository {
 	public void setDataSource(DataSource dataSource) {
 		this.getDAO().setDataSource(dataSource);
 	}
-	
 
 	public Long getSequence(String nome) {
 		StringBuilder builder = new StringBuilder();
