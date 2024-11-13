@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,8 +20,8 @@ import lombok.Data;
 @Data
 public abstract class TSJdbcRepository {
 
-	@Autowired
-	private JdbcTemplate dao;
+	
+	private JdbcTemplate dao = new JdbcTemplate();
 
 	@Value("${topsys.jdbc.maxrows}")
 	private String maxRows;
