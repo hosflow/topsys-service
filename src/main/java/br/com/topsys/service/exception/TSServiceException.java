@@ -57,7 +57,7 @@ public class TSServiceException {
 	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(new Date()).message("Já existe esse registro!").build(), HttpStatus.BAD_REQUEST);
+				.timestamp(new Date()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
 
 	}
 

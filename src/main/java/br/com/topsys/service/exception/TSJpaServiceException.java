@@ -19,8 +19,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import jakarta.persistence.EntityNotFoundException;
 
-@RestControllerAdvice
-@Component
+//@RestControllerAdvice
+//@Component
 public class TSJpaServiceException {
 
 	@ExceptionHandler(DataIntegrityViolationException.class)

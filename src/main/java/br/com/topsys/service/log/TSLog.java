@@ -32,6 +32,11 @@ public class TSLog {
 
 	@Value("${topsys.log.query.max.seconds}")
 	private long maxSeconds;
+	
+	public TSLog() {
+	
+	}
+
 
 	public TSLog(String query, Object[] parametros) {
 		this.query = query;
