@@ -1,6 +1,7 @@
 package br.com.topsys.service.main;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		this.validFieldId("id",model.getId());
 
 		this.validAccessControl(model);
-
+ 
 		return this.getRepository().get(model);
 	}
 
@@ -90,7 +91,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.validFields(model);
 		
-		model.setDataCadastro(LocalDateTime.now());
+		model.setDataCadastro(OffsetDateTime.now());
 
 		return this.getRepository().insert(model);
 
@@ -105,7 +106,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.validFields(model);
 		
-		model.setDataAtualizacao(LocalDateTime.now());
+		model.setDataAtualizacao(OffsetDateTime.now());
 
 		return this.getRepository().update(model);
 

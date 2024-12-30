@@ -9,11 +9,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import br.com.topsys.base.model.TSResponseExceptionModel;
@@ -29,8 +27,8 @@ public class TSJpaServiceException {
 		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date()).message("Já existe esse registro!").build(), HttpStatus.BAD_REQUEST);
 
-	} 
-
+	}    
+ 
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<Object> handleException404(EntityNotFoundException exception) {
 
