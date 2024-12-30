@@ -29,7 +29,7 @@ public class TSJpaServiceException {
 		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.BAD_REQUEST.value())
 				.timestamp(new Date()).message("Já existe esse registro!").build(), HttpStatus.BAD_REQUEST);
 
-	}
+	} 
 
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<Object> handleException404(EntityNotFoundException exception) {

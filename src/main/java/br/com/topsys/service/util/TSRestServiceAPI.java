@@ -32,7 +32,7 @@ public class TSRestServiceAPI {
 	private static final String NAO_PODE_SER_NULO = "O objeto passado por parâmetro do método post não pode ser nulo!";
 	
 	private RestTemplate restTemplate;
-
+ 
 	public TSRestServiceAPI() {
 		this.restTemplate = new RestTemplate();
 	}
@@ -49,7 +49,7 @@ public class TSRestServiceAPI {
 			retorno = convertObject(classe, retorno);
 
 		} catch (Exception e) {
-			this.handlerException(e);
+			this.handlerException(e); 
 		}
 
 		return retorno;
@@ -205,7 +205,7 @@ public class TSRestServiceAPI {
 			throw new TSApplicationException(e.getMessage(), ((TSApplicationException) e).getTSType());
 
 		} else {
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 			e.printStackTrace();
 			throw new TSSystemException(erroInterno, e);
 		}

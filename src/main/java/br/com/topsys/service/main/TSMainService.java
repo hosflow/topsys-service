@@ -1,5 +1,6 @@
 package br.com.topsys.service.main;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@Value("${topsys.service.isservice}")
 	private boolean isService = false;
 
-	@GetMapping(value = Endpoint.GET)
+	@GetMapping
 	public T get(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());
@@ -82,18 +83,20 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PostMapping(value = Endpoint.INSERT)
+	@PostMapping
 	public T insert(@RequestBody @Valid T model) {
 
 		this.validAccessControl(model);
 
 		this.validFields(model);
+		
+		model.setDataCadastro(LocalDateTime.now());
 
 		return this.getRepository().insert(model);
 
 	}
 
-	@PutMapping(value = Endpoint.UPDATE)
+	@PutMapping
 	public T update(@RequestBody @Valid T model) {
 
 		this.validFieldId("id",model.getId());
@@ -101,12 +104,14 @@ public abstract class TSMainService<T extends TSMainModel> {
 		this.validAccessControl(model);
 
 		this.validFields(model);
+		
+		model.setDataAtualizacao(LocalDateTime.now());
 
 		return this.getRepository().update(model);
 
 	}
 
-	@DeleteMapping(value = Endpoint.DELETE)
+	@DeleteMapping
 	public T delete(@RequestBody T model) {
 
 		this.validFieldId("id",model.getId());
@@ -155,6 +160,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	protected void validAccessControl(TSMainModel model) {
+		
 		if(isService) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("controleAcesso.usuarioFuncaoId",
