@@ -34,6 +34,16 @@ public class TSServiceException {
 				.message(ERRO_INTERNO).trace(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
+	
+	@ExceptionHandler(RuntimeException.class)
+	public ResponseEntity<Object> handleException(RuntimeException ex) {
+
+		ex.printStackTrace();
+ 
+		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+				.message(ERRO_INTERNO).trace(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
 
 	@ExceptionHandler(TSApplicationException.class)
 	public ResponseEntity<Object> handleException(TSApplicationException ex) {
