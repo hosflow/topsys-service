@@ -91,6 +91,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.validFields(model);
 		
+		this.insertBusinessRule();
+		
 		model.setDataCadastro(OffsetDateTime.now());
 
 		return this.getRepository().insert(model);
@@ -101,10 +103,12 @@ public abstract class TSMainService<T extends TSMainModel> {
 	public T update(@RequestBody @Valid T model) {
 
 		this.validFieldId("id",model.getId());
-
+		
 		this.validAccessControl(model);
 
 		this.validFields(model);
+		
+		this.updateBusinessRule();
 		
 		model.setDataAtualizacao(OffsetDateTime.now());
 
@@ -188,5 +192,9 @@ public abstract class TSMainService<T extends TSMainModel> {
 		this.validFields(map);
 
 	}
+	
+	protected void updateBusinessRule() {}
+	protected void insertBusinessRule() {}
+	
 
 }
