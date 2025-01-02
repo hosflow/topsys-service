@@ -3,6 +3,11 @@ package br.com.topsys.service.security;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +18,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 
 import br.com.topsys.base.model.TSSecurityModel;
 import jakarta.servlet.http.HttpServletRequest;
@@ -98,7 +104,7 @@ public class TSTokenService {
 			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(tokenJwt).getClaim(claim);
 
 			if(!claimAux.isNull()) {
-				return claimAux.asString();
+				return claimAux.toString();
 			}
 			
 		} catch (JWTVerificationException exception) {
@@ -106,6 +112,25 @@ public class TSTokenService {
 		}
 		
 		return null;
+	}
+	
+	public Map<String, Object> getClaims() {
+		try {
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(this.getToken()).getClaims();
+
+			Map<String, Object> map = new HashMap<>();
+			
+			for (Entry<String, Claim> entry : claimAux.entrySet()) {
+				map.put(entry.getKey(), entry.getValue().as(Object.class));
+			}
+			
+			return map;
+			
+		} catch (JWTVerificationException exception) {
+			throw new RuntimeException("Token JWT inválido ou expirado!", exception);
+		}
+		
 	}
 	
 	public String getClaim(String claim) {

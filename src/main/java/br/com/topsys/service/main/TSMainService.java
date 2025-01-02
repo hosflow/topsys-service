@@ -173,17 +173,19 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	protected void injectAccessControl(TSMainModel model) {
 		TSAccessControlModel controlModel = new TSAccessControlModel();
+		
+		Map<String, Object> claims = this.tokenService.getClaims();
 
-		if (!TSUtil.isEmpty(this.tokenService.getClaim("origemId"))) {
-			controlModel.setOrigemId(Long.valueOf(this.tokenService.getClaim("origemId")));
+		if (!TSUtil.isEmpty(claims.get("origemId"))) {
+			controlModel.setOrigemId(((Integer) claims.get("origemId")).longValue());
 		}
 
-		if (!TSUtil.isEmpty(this.tokenService.getClaim("usuarioFuncaoId"))) {
-			controlModel.setUsuarioFuncaoId(Long.valueOf(this.tokenService.getClaim("usuarioFuncaoId")));
+		if (!TSUtil.isEmpty(claims.get("usuarioFuncaoId"))) {
+			controlModel.setUsuarioFuncaoId(((Integer) claims.get("usuarioFuncaoId")).longValue());
 		}
 
-		if (!TSUtil.isEmpty(this.tokenService.getClaim("id"))) {
-			controlModel.setUsuarioId(Long.valueOf(this.tokenService.getClaim("id")));
+		if (!TSUtil.isEmpty(claims.get("id"))) {
+			controlModel.setUsuarioId(((Integer) claims.get("id")).longValue());
 		}
 
 		model.setControleAcesso(controlModel);
