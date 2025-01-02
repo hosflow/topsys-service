@@ -25,7 +25,7 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		var token = getToken(request);
+		var token = tokenService.getToken(request);
 
 		if (this.tokenService.isTokenValid(token).booleanValue()) {
 			authenticateWithToken(token);
@@ -47,17 +47,6 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 
 	}
 
-	private String getToken(HttpServletRequest request) {
-
-		var authorization = request.getHeader("Authorization");
-
-		if (authorization != null) {
-			return authorization.replace("Bearer ", "");
-
-		}
-
-		return null;
-
-	}
+	
 
 }

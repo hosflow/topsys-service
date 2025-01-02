@@ -4,6 +4,8 @@ public interface TSSecurityModel {
 	
 	public Long getId();
 	
+	public Long getUsuarioFuncaoId();
+	
 	public Long getOrigemId();
 	
 	public void setLogin(String login);
@@ -14,6 +16,8 @@ public interface TSSecurityModel {
 	
 	public void setSenha(String senha);
 	public String getSenha();
+	
+	
 	
 
 }

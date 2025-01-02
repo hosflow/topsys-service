@@ -1,6 +1,5 @@
 package br.com.topsys.service.main;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,34 +17,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.topsys.base.constant.Endpoint;
 import br.com.topsys.base.exception.TSApplicationException;
+import br.com.topsys.base.model.TSAccessControlModel;
 import br.com.topsys.base.model.TSLazyModel;
 import br.com.topsys.base.model.TSMainModel;
 import br.com.topsys.base.util.TSType;
 import br.com.topsys.base.util.TSUtil;
+import br.com.topsys.service.security.TSTokenService;
 
 public abstract class TSMainService<T extends TSMainModel> {
 
 	protected abstract TSMainRepository<T> getRepository();
-	
+
+	@Autowired
+	private TSTokenService tokenService;
+
 	@Value("${topsys.service.isservice}")
 	private boolean isService = false;
 
 	@GetMapping
 	public T get(@RequestBody T model) {
 
-		this.validFieldId("id",model.getId());
+		this.validFieldId("id", model.getId());
 
-		this.validAccessControl(model);
- 
 		return this.getRepository().get(model);
 	}
 
 	@GetMapping(value = Endpoint.GET_HISTORY)
 	public T getHistory(@RequestBody T model) {
-         
-		this.validFieldId("idHistorico",model.getIdHistorico());
-		
-		this.validAccessControl(model);
+
+		this.validFieldId("idHistorico", model.getIdHistorico());
 
 		return this.getRepository().getHistory(model);
 	}
@@ -52,17 +53,13 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = Endpoint.FIND)
 	public List<T> find(@RequestBody T model) {
 
-		this.validAccessControl(model);
-
 		return this.getRepository().find(model);
 	}
 
 	@PostMapping(value = Endpoint.FIND_HISTORY)
 	public List<T> findHistory(@RequestBody T model) {
 
-		this.validFieldId("id",model.getId());
-
-		this.validAccessControl(model);
+		this.validFieldId("id", model.getId());
 
 		return this.getRepository().findHistory(model);
 	}
@@ -70,15 +67,11 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = Endpoint.FIND_LAZY)
 	public List<T> find(@RequestBody TSLazyModel<T> lazyModel) {
 
-		this.validAccessControl(lazyModel.getModel());
-
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
 	}
 
 	@GetMapping(value = Endpoint.ROWCOUNT)
 	public Integer rowCount(@RequestBody T model) {
-
-		this.validAccessControl(model);
 
 		return this.getRepository().rowCount(model);
 
@@ -87,12 +80,14 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping
 	public T insert(@RequestBody @Valid T model) {
 
-		this.validAccessControl(model);
+		this.validFieldsInsert(model);
 
 		this.validFields(model);
-		
+
+		this.injectAccessControl(model);
+
 		this.insertBusinessRule();
-		
+
 		model.setDataCadastro(OffsetDateTime.now());
 
 		return this.getRepository().insert(model);
@@ -102,14 +97,16 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PutMapping
 	public T update(@RequestBody @Valid T model) {
 
-		this.validFieldId("id",model.getId());
-		
-		this.validAccessControl(model);
+		this.validFieldId("id", model.getId());
+
+		this.validFieldsUpdate(model);
 
 		this.validFields(model);
-		
+
+		this.injectAccessControl(model);
+
 		this.updateBusinessRule();
-		
+
 		model.setDataAtualizacao(OffsetDateTime.now());
 
 		return this.getRepository().update(model);
@@ -119,9 +116,13 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@DeleteMapping
 	public T delete(@RequestBody T model) {
 
-		this.validFieldId("id",model.getId());
+		this.validFieldId("id", model.getId());
 
-		this.validAccessControl(model);
+		this.injectAccessControl(model);
+
+		this.deleteBusinessRule();
+
+		model.setDataAtualizacao(OffsetDateTime.now());
 
 		return this.getRepository().delete(model);
 
@@ -164,18 +165,29 @@ public abstract class TSMainService<T extends TSMainModel> {
 		// update.
 	}
 
-	protected void validAccessControl(TSMainModel model) {
-		
-		if(isService) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("controleAcesso.usuarioFuncaoId",
-					(model.getControleAcesso() == null ? null : model.getControleAcesso().getUsuarioFuncaoId()));
-			map.put("controleAcesso.origemId",
-					(model.getControleAcesso() == null ? null : model.getControleAcesso().getOrigemId()));
-			this.validFields(map);
+	protected void validFieldsInsert(T model) {
+	}
+
+	protected void validFieldsUpdate(T model) {
+	}
+
+	protected void injectAccessControl(TSMainModel model) {
+		TSAccessControlModel controlModel = new TSAccessControlModel();
+
+		if (!TSUtil.isEmpty(this.tokenService.getClaim("origemId"))) {
+			controlModel.setOrigemId(Long.valueOf(this.tokenService.getClaim("origemId")));
 		}
-		
-		
+
+		if (!TSUtil.isEmpty(this.tokenService.getClaim("usuarioFuncaoId"))) {
+			controlModel.setUsuarioFuncaoId(Long.valueOf(this.tokenService.getClaim("usuarioFuncaoId")));
+		}
+
+		if (!TSUtil.isEmpty(this.tokenService.getClaim("id"))) {
+			controlModel.setUsuarioId(Long.valueOf(this.tokenService.getClaim("id")));
+		}
+
+		model.setControleAcesso(controlModel);
+
 	}
 
 	protected void validAutoComplete(String field, int min) {
@@ -192,9 +204,14 @@ public abstract class TSMainService<T extends TSMainModel> {
 		this.validFields(map);
 
 	}
-	
-	protected void updateBusinessRule() {}
-	protected void insertBusinessRule() {}
-	
+
+	protected void updateBusinessRule() {
+	}
+
+	protected void insertBusinessRule() {
+	}
+
+	protected void deleteBusinessRule() {
+	}
 
 }

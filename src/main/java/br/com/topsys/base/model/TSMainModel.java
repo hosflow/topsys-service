@@ -19,7 +19,7 @@ public abstract class TSMainModel implements Serializable {
 	@EqualsAndHashCode.Include 
 	protected Long idHistorico;
 
-	protected TSControleAcessoModel controleAcesso;
+	protected TSAccessControlModel controleAcesso;
 	
 	protected OffsetDateTime dataCadastro; 
 	

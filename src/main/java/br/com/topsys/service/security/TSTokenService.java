@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.topsys.base.model.TSSecurityModel;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class TSTokenService {
@@ -23,6 +25,9 @@ public class TSTokenService {
 
 	@Value("${topsys.jwt.secret}")
 	private String secret;
+	
+	@Autowired
+	private HttpServletRequest httpRequest;
 
 
 	public String generateToken(Authentication authentication) {
@@ -33,6 +38,7 @@ public class TSTokenService {
 
 			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(model.getLogin())
 					.withClaim("id", model.getId())
+					.withClaim("usuarioFuncaoId", model.getUsuarioFuncaoId())
 					.withClaim("origemId", model.getOrigemId())
 					.withClaim("token", model.getToken())
 					.withExpiresAt(expiracao(expiration)).sign(algorithm);
@@ -51,6 +57,7 @@ public class TSTokenService {
 
 			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
 					.withClaim("id", securityModel.getId())
+					.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
 					.withClaim("origemId", securityModel.getOrigemId())
 					.withClaim("token", securityModel.getToken())
 					.withExpiresAt(expiracao(expiration)).sign(algorithm);
@@ -100,6 +107,31 @@ public class TSTokenService {
 		
 		return null;
 	}
+	
+	public String getClaim(String claim) {
+		return this.getClaim(this.getToken(), claim);
+	}
+	
+	public String getToken(HttpServletRequest request) {
+
+		var authorization = request.getHeader("Authorization");
+
+		if (authorization != null) {
+			return authorization.replace("Bearer ", "");
+
+		}
+
+		return null;
+
+	}
+	
+	public String getToken() {
+
+		return getToken(httpRequest);
+
+	}
+	
+	
 	
 	public Boolean isTokenValid(String token) {
 		try {
