@@ -2,6 +2,7 @@ package br.com.topsys.base.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,14 @@ public abstract class TSMainModel implements Serializable {
 	protected OffsetDateTime dataCadastro; 
 	
 	protected OffsetDateTime dataAtualizacao;
+	
+	protected Boolean flagAtivo; 	
+	
+	protected TSUserIf usuarioCadastroModel;	
+	
+	protected TSUserIf usuarioAtualizacaoModel;
+	
+	protected List<TSMessageModel> messages;
 	
 	
 

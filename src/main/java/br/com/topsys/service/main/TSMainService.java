@@ -67,7 +67,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = Endpoint.FIND_LAZY)
 	public List<T> find(@RequestBody TSLazyModel<T> lazyModel) {
 
-		return this.getRepository().find(lazyModel.getModel(), lazyModel.getOffset(), lazyModel.getSize());
+		return this.getRepository().find(lazyModel.getModel(), lazyModel.getPage(), lazyModel.getSize());
 	}
 
 	@GetMapping(value = Endpoint.ROWCOUNT)

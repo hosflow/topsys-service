@@ -13,12 +13,12 @@ public class TSLazyModel<T extends TSMainModel> implements Serializable {
 
 	private T model;
 	
-	private int offset;
+	private int page;
 	private int size;
 
-	public TSLazyModel(T model, int offset, int size) {
+	public TSLazyModel(T model, int page, int size) {
 		this.model = model;
-		this.offset = offset;
+		this.page = page;
 		this.size = size;
 	}
 
