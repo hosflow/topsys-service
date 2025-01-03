@@ -28,9 +28,9 @@ public abstract class TSMainModel implements Serializable {
 	
 	protected Boolean flagAtivo; 	
 	
-	protected TSUserIf usuarioCadastroModel;	
+	protected TSUserModel usuarioCadastroModel;	
 	
-	protected TSUserIf usuarioAtualizacaoModel;
+	protected TSUserModel usuarioAtualizacaoModel;
 	
 	protected List<TSMessageModel> messages;
 	
