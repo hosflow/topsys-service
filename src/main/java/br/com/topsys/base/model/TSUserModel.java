@@ -1,7 +1,12 @@
 package br.com.topsys.base.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 @SuppressWarnings("serial")
-public abstract class TSUserModel extends TSMainModel {
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class TSUserModel extends TSMainModel {
 	
 	public String nome;
 	public String login;
