@@ -9,8 +9,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,19 +37,19 @@ public abstract class TSMainService<T extends TSMainModel> {
 	private boolean isService = false;
 
 	@GetMapping
-	public T get(@RequestBody T model) {
+	public T get(@PathVariable(required = true) Long id) {
 
-		this.validFieldId("id", model.getId());
+		this.validFieldId("id", id);
 
-		return this.getRepository().get(model);
+		return this.getRepository().get(id);
 	}
 
 	@GetMapping(value = Endpoint.GET_HISTORY)
-	public T getHistory(@RequestBody T model) {
+	public T getHistory(@PathVariable(required = true) Long id) {
 
-		this.validFieldId("idHistorico", model.getIdHistorico());
+		this.validFieldId("idHistorico", id);
 
-		return this.getRepository().getHistory(model);
+		return this.getRepository().getHistory(id);
 	}
 
 	@PostMapping(value = Endpoint.FIND)
@@ -71,9 +73,9 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@GetMapping(value = Endpoint.ROWCOUNT)
-	public Integer rowCount(@RequestBody T model) {
+	public Integer rowCount(@PathVariable(required = true) Long id) {
 
-		return this.getRepository().rowCount(model);
+		return this.getRepository().rowCount(id);
 
 	}
 

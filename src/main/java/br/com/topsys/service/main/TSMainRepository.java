@@ -22,15 +22,15 @@ public interface TSMainRepository<T extends TSMainModel>  {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 	
-	default Integer rowCount(T model) {
+	default Integer rowCount(Long id) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default T get(T model) {
+	default T get(Long id) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 	
-	default T getHistory(T model) {
+	default T getHistory(Long id) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
