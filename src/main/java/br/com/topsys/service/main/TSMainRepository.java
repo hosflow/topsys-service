@@ -22,7 +22,7 @@ public interface TSMainRepository<T extends TSMainModel>  {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 	
-	default Integer rowCount(Long id) {
+	default Integer rowCount(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 

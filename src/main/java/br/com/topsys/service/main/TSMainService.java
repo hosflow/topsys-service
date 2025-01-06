@@ -72,10 +72,10 @@ public abstract class TSMainService<T extends TSMainModel> {
 		return this.getRepository().find(lazyModel.getModel(), lazyModel.getPage(), lazyModel.getSize());
 	}
 
-	@GetMapping(value = Endpoint.ROWCOUNT)
-	public Integer rowCount(@PathVariable(required = true) Long id) {
+	@PostMapping(value = Endpoint.ROWCOUNT)
+	public Integer rowCount(@RequestBody T model) {
 
-		return this.getRepository().rowCount(id);
+		return this.getRepository().rowCount(model);
 
 	}
 
