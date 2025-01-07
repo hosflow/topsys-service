@@ -2,9 +2,9 @@ package br.com.topsys.base.constant;
 
 public final class Endpoint {
 	
-	public static final String GET = "/get";
-	public static final String GET_HISTORY = "/get-history";
-	public static final String GET_BY_EXTERNAL_ID = "/get-by-external-id";
+	public static final String GET = "/get/{id}";
+	public static final String GET_HISTORY = "/get-history/{id}";
+	public static final String GET_BY_EXTERNAL_ID = "/get-by-external-id/{id}";
 	public static final String FIND = "/find";
 	public static final String FIND_LAZY = "/find-lazy";
 	public static final String FIND_HISTORY = "/find-history";
