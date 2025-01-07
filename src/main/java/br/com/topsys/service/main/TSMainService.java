@@ -36,7 +36,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	private boolean isService = false;
 
 	@GetMapping(value = "/{id}")
-	public T get(@PathVariable(required = true, name = "id") Long id) {
+	public T get(@PathVariable(required = true) Long id) {
 
 		this.validFieldId("id", id);
 
@@ -50,7 +50,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@GetMapping(value = Endpoint.GET_HISTORY)
-	public T getHistory(@PathVariable(required = true, name = "id") Long id) {
+	public T getHistory(@PathVariable(required = true) Long id) {
 
 		this.validFieldId("idHistorico", id);
 

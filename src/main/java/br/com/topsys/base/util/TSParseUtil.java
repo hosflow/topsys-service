@@ -33,7 +33,7 @@ public final class TSParseUtil {
 	public static String numberToString(Number valor) {
 		String number = null;
 		if (valor != null) {
-			NumberFormat numFormat = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+			NumberFormat numFormat = NumberFormat.getNumberInstance(Locale.of("pt", "BR"));
 			number = numFormat.format(valor);
 		} else {
 			number = "";
@@ -243,7 +243,7 @@ public final class TSParseUtil {
 
 	private static DecimalFormat monetario() {
 
-		Locale loc = new Locale("br", "PT");
+		Locale loc = Locale.of("pt", "BR");
 		NumberFormat nf = NumberFormat.getNumberInstance(loc);
 		DecimalFormat df = (DecimalFormat) nf;
 		df.applyPattern("###,##0.00");
@@ -269,7 +269,7 @@ public final class TSParseUtil {
 
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public static Double stringToDouble(String value) {
 		Double retorno = null;
 		if (value == null) {
@@ -285,7 +285,7 @@ public final class TSParseUtil {
 
 			}
 
-			retorno = new Double(numero.replace(',', '.'));
+			retorno = Double.valueOf(numero.replace(',', '.'));
 
 		} catch (Exception e) {
 
