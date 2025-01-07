@@ -42,6 +42,12 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		return this.getRepository().get(id);
 	}
+	
+	@GetMapping(value = Endpoint.GET_ALL)
+	public List<T> getAll() {
+
+		return this.getRepository().all();
+	}
 
 	@GetMapping(value = Endpoint.GET_HISTORY)
 	public T getHistory(@PathVariable(required = true, name = "id") Long id) {

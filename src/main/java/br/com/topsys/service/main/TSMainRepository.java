@@ -9,6 +9,10 @@ import br.com.topsys.base.model.TSMainModel;
 public interface TSMainRepository<T extends TSMainModel>  {
 
 	static final String NOT_IMPLEMENTED = "Método não implementando no Repository";
+	
+	default List<T> all() {
+		throw new TSSystemException(NOT_IMPLEMENTED);
+	}
 
 	default List<T> find(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
