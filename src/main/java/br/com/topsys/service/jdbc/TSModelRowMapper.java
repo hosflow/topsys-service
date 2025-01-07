@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -77,8 +78,7 @@ public class TSModelRowMapper<T> implements RowMapper<T> {
 
 					if (rs.getTimestamp(x + 1) != null) {
 
-						wrapper.setPropertyValue(parametros[x],
-								OffsetDateTime.ofInstant(rs.getTimestamp(x + 1).toInstant(), ZoneId.systemDefault()));
+						wrapper.setPropertyValue(parametros[x], rs.getObject(x + 1, OffsetDateTime.class));
 
 					}
 

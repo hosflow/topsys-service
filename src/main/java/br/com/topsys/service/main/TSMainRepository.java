@@ -22,7 +22,7 @@ public interface TSMainRepository<T extends TSMainModel>  {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default List<T> find(T model, int offset, int size) {
+	default List<T> find(T model, int page, int size) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 	
