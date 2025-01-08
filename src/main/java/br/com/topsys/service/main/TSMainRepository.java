@@ -1,52 +1,90 @@
 package br.com.topsys.service.main;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSMainModel;
+import br.com.topsys.service.jdbc.TSJdbcTemplate;
+import br.com.topsys.service.jdbc.TSModelRowMapper;
 
 
-public interface TSMainRepository<T extends TSMainModel>  {
+public abstract class TSMainRepository<T extends TSMainModel>  {
 
-	static final String NOT_IMPLEMENTED = "Método não implementando no Repository";
+	private static final String NOT_IMPLEMENTED = "Método não implementando no Repository";
 	
-	default List<T> all() {
-		throw new TSSystemException(NOT_IMPLEMENTED);
-	}
-
-	default List<T> find(T model) {
-		throw new TSSystemException(NOT_IMPLEMENTED);
-	}
+	@Autowired
+	protected TSJdbcTemplate jdbcTemplate;
 	
-	default List<T> findHistory(T model) {
+	
+	public List<T> all() {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default List<T> find(T model, int page, int size) {
-		throw new TSSystemException(NOT_IMPLEMENTED);
+	public List<T> find(T model) {
+		return this.find(model, 0, 0);
 	}
 	
-	default Integer rowCount(T model) {
+	public List<T> findHistory(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default T get(Long id) {
+	public List<T> find(T model, int page, int size) {
+		var query = new StringBuilder();
+		var params = new ArrayList<>();
+		var columns = new ArrayList<String>();
+		
+		Class<T> type = (Class<T>) model.getClass();
+	
+		this.prepareFind(model, query, params, columns);
+		
+		if (size > 0) {
+			query.append(" LIMIT ? OFFSET ? ");
+			params.add(size);
+			params.add((page - 1) * size);
+		}
+			
+		return this.jdbcTemplate.query(query.toString(), new TSModelRowMapper<T>(type, columns.toArray(new String[]{})), params.toArray());
+	}
+	
+	public Integer rowCount(T model) {
+		var query = new StringBuilder();
+		var params = new ArrayList<Object>();
+		
+		query.append("select count(1) from (");
+		
+		this.prepareFind(model, query, params, null);
+		
+		query.append(") sub");
+		
+		return this.jdbcTemplate.getRowCount(query.toString(), params.toArray());
+	}
+	
+	protected void prepareFind(T model, StringBuilder query, List<Object> params, List<String> columns) {
+    	throw new TSSystemException(NOT_IMPLEMENTED);
+    }
+    
+
+    public T get(Long id) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 	
-	default T getHistory(Long id) {
+    public T getHistory(Long id) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default T update(T model) {
+    public T update(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default T insert(T model) {
+    public T insert(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-	default T delete(T model) {
+    public T delete(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 }
