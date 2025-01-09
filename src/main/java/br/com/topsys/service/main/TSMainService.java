@@ -1,5 +1,6 @@
 package br.com.topsys.service.main;
 
+import java.lang.reflect.ParameterizedType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.topsys.base.constant.Endpoint;
 import br.com.topsys.base.exception.TSApplicationException;
+import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSAccessControlModel;
 import br.com.topsys.base.model.TSLazyModel;
 import br.com.topsys.base.model.TSMainModel;
@@ -93,7 +96,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.injectAccessControl(model);
 
-		this.insertBusinessRule();
+		this.insertBusinessRule(model);
 
 		model.setDataCadastro(OffsetDateTime.now());
 
@@ -112,7 +115,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.injectAccessControl(model);
 
-		this.updateBusinessRule();
+		this.updateBusinessRule(model);
 
 		model.setDataAtualizacao(OffsetDateTime.now());
 
@@ -120,14 +123,29 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@DeleteMapping
-	public T delete(@RequestBody T model) {
+	@DeleteMapping(value = "/{id}")
+	public T delete(@PathVariable(required = true) Long id) {
+		T model; 
+		
+		this.validFieldId("id", id);
 
-		this.validFieldId("id", model.getId());
-
+		try {
+			
+			Class<T> modelClass = (Class<T>) ((ParameterizedType) getClass()
+	                .getGenericSuperclass())
+	                .getActualTypeArguments()[0];
+			
+			model = modelClass.getDeclaredConstructor().newInstance();
+			
+		}catch (Exception e) {
+			throw new TSSystemException(e);
+		}
+		
+		model.setId(id);
+		
 		this.injectAccessControl(model);
 
-		this.deleteBusinessRule();
+		this.deleteBusinessRule(model);
 
 		model.setDataAtualizacao(OffsetDateTime.now());
 
@@ -214,13 +232,13 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	protected void updateBusinessRule() {
+	protected void updateBusinessRule(T model) {
 	}
 
-	protected void insertBusinessRule() {
+	protected void insertBusinessRule(T model) {
 	}
 
-	protected void deleteBusinessRule() {
+	protected void deleteBusinessRule(T model) {
 	}
 
 }
