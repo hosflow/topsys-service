@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +24,7 @@ import br.com.topsys.base.model.TSMainModel;
 import br.com.topsys.base.util.TSType;
 import br.com.topsys.base.util.TSUtil;
 import br.com.topsys.service.security.TSTokenService;
+import jakarta.validation.Valid;
 
 public abstract class TSMainService<T extends TSMainModel> {
 
@@ -35,7 +34,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	private TSTokenService tokenService;
 
 	@Value("${topsys.service.isservice}")
-	private boolean isService = false;
+	private boolean isService = false; 
 
 	@GetMapping(value = "/{id}")
 	public T get(@PathVariable(required = true) Long id) {
