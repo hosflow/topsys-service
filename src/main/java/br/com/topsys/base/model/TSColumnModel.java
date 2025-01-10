@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("serial")
 @EqualsAndHashCode
 @NoArgsConstructor
 public class TSColumnModel implements Serializable {

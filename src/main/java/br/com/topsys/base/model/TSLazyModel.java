@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@SuppressWarnings("serial")
 @Data
 @NoArgsConstructor
 public class TSLazyModel<T extends TSMainModel> implements Serializable {

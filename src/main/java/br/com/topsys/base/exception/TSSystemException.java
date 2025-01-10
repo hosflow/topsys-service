@@ -1,6 +1,5 @@
 package br.com.topsys.base.exception;
 
-@SuppressWarnings("serial")
 public class TSSystemException extends RuntimeException {
 
 	public TSSystemException(Exception e) {

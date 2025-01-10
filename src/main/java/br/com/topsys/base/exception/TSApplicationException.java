@@ -2,7 +2,6 @@ package br.com.topsys.base.exception;
 
 import br.com.topsys.base.util.TSType;
 
-@SuppressWarnings("serial")
 public class TSApplicationException extends RuntimeException {
 
 	private TSType tsType = TSType.BUSINESS;

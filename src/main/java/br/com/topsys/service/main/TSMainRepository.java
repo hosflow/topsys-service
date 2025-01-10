@@ -31,6 +31,7 @@ public abstract class TSMainRepository<T extends TSMainModel>  {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<T> find(T model, int page, int size) {
 		var query = new StringBuilder();
 		var params = new ArrayList<>();

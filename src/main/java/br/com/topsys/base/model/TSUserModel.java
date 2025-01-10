@@ -3,7 +3,6 @@ package br.com.topsys.base.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@SuppressWarnings("serial")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class TSUserModel extends TSMainModel {

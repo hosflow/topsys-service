@@ -5,7 +5,6 @@ import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
 
-@SuppressWarnings("serial")
 @Data
 @Builder
 public class TSRestModel implements Serializable {

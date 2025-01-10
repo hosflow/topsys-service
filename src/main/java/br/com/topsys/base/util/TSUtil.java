@@ -87,6 +87,7 @@ public final class TSUtil {
 		return !isEmpty(values);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static boolean isEmpty(Object... values) {
 		boolean retorno = false;
 
