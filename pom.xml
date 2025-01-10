@@ -17,15 +17,11 @@
 		<version>3.4.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-
+ 
 	<properties> 
 
 		<java.version>23</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>23</maven.compiler.source>
-		<maven.compiler.target>23</maven.compiler.target>
-		<maven.compiler.proc>full</maven.compiler.proc>
-		<maven.compiler.parameters>true</maven.compiler.parameters>
 
 		<beanutils.version>1.9.4</beanutils.version>
 		<topsys.version>2.0</topsys.version>
