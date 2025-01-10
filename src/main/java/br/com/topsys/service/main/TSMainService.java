@@ -41,7 +41,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@GetMapping(value = "/{id}")
 	public T get(@PathVariable(required = true) Long id) {
 
-		this.validFieldId("id", id);
+		this.validField("id", id);
 
 		return this.getRepository().get(id);
 	}
@@ -55,7 +55,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@GetMapping(value = Endpoint.GET_HISTORY)
 	public T getHistory(@PathVariable(required = true) Long id) {
 
-		this.validFieldId("idHistorico", id);
+		this.validField("idHistorico", id);
 
 		return this.getRepository().getHistory(id);
 	}
@@ -69,7 +69,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PostMapping(value = Endpoint.FIND_HISTORY)
 	public List<T> findHistory(@RequestBody T model) {
 
-		this.validFieldId("id", model.getId());
+		this.validField("id", model.getId());
 
 		return this.getRepository().findHistory(model);
 	}
@@ -107,7 +107,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PutMapping
 	public T update(@RequestBody @Valid T model) {
 
-		this.validFieldId("id", model.getId());
+		this.validField("id", model.getId());
 
 		this.validFieldsUpdate(model);
 
@@ -127,10 +127,11 @@ public abstract class TSMainService<T extends TSMainModel> {
 	public T delete(@PathVariable(required = true) Long id) {
 		T model; 
 		
-		this.validFieldId("id", id);
+		this.validField("id", id);
 
 		try {
 			
+			@SuppressWarnings("unchecked")
 			Class<T> modelClass = (Class<T>) ((ParameterizedType) getClass()
 	                .getGenericSuperclass())
 	                .getActualTypeArguments()[0];
@@ -224,7 +225,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 		}
 	}
 
-	private void validFieldId(String nome, Long id) {
+	protected void validField(String nome, Object id) {
 		Map<String, Object> map = new HashMap<>();
 		map.put(nome, id);
 
