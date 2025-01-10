@@ -147,7 +147,7 @@ public final class TSUtil {
 
 			Double parcial = valorParcial * 100;
 
-			Double porcetagem = parcial.doubleValue() / total;
+			Double porcetagem = parcial / total;
 
 			return df.format(porcetagem).replace(",00", "");
 
@@ -234,9 +234,7 @@ public final class TSUtil {
 				n = nf.parse(valor);
 
 			} catch (ParseException e) {
-
 				e.printStackTrace();
-
 			}
 
 		}
