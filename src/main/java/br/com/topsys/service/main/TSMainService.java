@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +31,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@Autowired
 	private TSTokenService tokenService;
-
-	@Value("${topsys.service.isservice}")
-	private boolean isService = false; 
 
 	@GetMapping(value = "/{id}")
 	public T get(@PathVariable(required = true) Long id) {
