@@ -20,6 +20,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 
 import br.com.topsys.base.model.TSSecurityModel;
+import br.com.topsys.base.util.TSUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -114,6 +115,11 @@ public class TSTokenService {
 	}
 	
 	public Map<String, Object> getClaims() {
+
+		if(TSUtil.isEmpty(this.expiration)) {
+			return null;
+		}
+
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(this.getToken()).getClaims();
