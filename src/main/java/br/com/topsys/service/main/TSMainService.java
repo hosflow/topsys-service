@@ -185,10 +185,10 @@ public abstract class TSMainService<T extends TSMainModel> {
 		
 		Map<String, Object> claims = this.tokenService.getClaims();
 
-		if(claims != null) {
-
-			TSAccessControlModel controlModel = new TSAccessControlModel();
+		TSAccessControlModel controlModel = new TSAccessControlModel();
 		
+		if(claims != null) {
+	
 			if (!TSUtil.isEmpty(claims.get("origemId"))) {
 				controlModel.setOrigemId(((Integer) claims.get("origemId")).longValue());
 			}
@@ -200,11 +200,10 @@ public abstract class TSMainService<T extends TSMainModel> {
 			if (!TSUtil.isEmpty(claims.get("id"))) {
 				controlModel.setUsuarioId(((Integer) claims.get("id")).longValue());
 			}
-	
-			model.setControleAcesso(controlModel);
 		
 		}
 		
+		model.setControleAcesso(controlModel);
 
 	}
 
