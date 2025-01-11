@@ -27,7 +27,7 @@ public abstract class TSMainModel implements Serializable {
 	
 	protected OffsetDateTime dataAtualizacao;
 	
-	protected Boolean flagAtivo = false; 	
+	protected Boolean flagAtivo; 	
 	
 	protected TSUserModel usuarioCadastroModel;	
 	
