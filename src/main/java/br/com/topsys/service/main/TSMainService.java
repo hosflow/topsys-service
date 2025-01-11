@@ -39,8 +39,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@GetMapping(value = "/{id}")
 	public T get(@PathVariable(required = true) Long id) {
 
-		this.validField("id", id);
-
 		return this.getRepository().get(id);
 	}
 	
@@ -53,8 +51,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@GetMapping(value = Endpoint.GET_HISTORY)
 	public T getHistory(@PathVariable(required = true) Long id) {
 
-		this.validField("idHistorico", id);
-
 		return this.getRepository().getHistory(id);
 	}
 
@@ -65,9 +61,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@PostMapping(value = Endpoint.FIND_HISTORY)
-	public List<T> findHistory(@RequestBody T model) {
-
-		this.validField("id", model.getId());
+	public List<T> findHistory(@RequestBody @Valid T model) {
 
 		return this.getRepository().findHistory(model);
 	}
@@ -86,7 +80,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@PostMapping
-	public T insert(@RequestBody @Valid T model) {
+	public T insert(@RequestBody T model) {
 
 		this.validFieldsInsert(model);
 
@@ -105,8 +99,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@PutMapping
 	public T update(@RequestBody @Valid T model) {
 
-		this.validField("id", model.getId());
-
 		this.validFieldsUpdate(model);
 
 		this.validFields(model);
@@ -124,9 +116,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	@DeleteMapping(value = "/{id}")
 	public T delete(@PathVariable(required = true) Long id) {
 		T model; 
-		
-		this.validField("id", id);
-
+	
 		try {
 			
 			@SuppressWarnings("unchecked")

@@ -12,7 +12,7 @@ public class TSUserModel extends TSMainModel {
 	public String senha;
 	public String cpf;
 	public String email;
-	public Boolean flagAdministrador;
+	public Boolean flagAdministrador = false;
 	
 	
 

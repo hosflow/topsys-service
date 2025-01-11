@@ -1,6 +1,8 @@
 package br.com.topsys.service.exception;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,8 +32,11 @@ public class TSServiceException {
 
 		ex.printStackTrace();
  
-		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-				.message(ERRO_INTERNO).trace(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return ResponseEntity.internalServerError().body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message(ERRO_INTERNO)
+				.trace(ex.getMessage())
+				.build());
 
 	}
 	
@@ -40,8 +45,11 @@ public class TSServiceException {
 
 		ex.printStackTrace();
  
-		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-				.message(ERRO_INTERNO).trace(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return ResponseEntity.internalServerError().body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message(ERRO_INTERNO)
+				.trace(ex.getMessage())
+				.build());
 
 	}
 
@@ -58,36 +66,42 @@ public class TSServiceException {
 	@ExceptionHandler(DuplicateKeyException.class)
 	public ResponseEntity<Object> handleException(DuplicateKeyException ex) {
 
-		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(new Date()).message("Já existe esse registro!").build(), HttpStatus.BAD_REQUEST);
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message("Já existe esse registro!")
+				.build());
 
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Object> handleException(DataIntegrityViolationException ex) {
 
-		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.BAD_REQUEST.value())
-				.timestamp(new Date()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message(ex.getMessage())
+				.build());
 
 	}
 
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Object> handleException(EmptyResultDataAccessException ex) {
 
-		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.NOT_FOUND.value())
-				.timestamp(new Date()).message("Nenhum registro encontrado!").build(), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(TSResponseExceptionModel.builder()
+				.status(HttpStatus.NOT_FOUND.value())
+				.timestamp(new Date())
+				.message("Nenhum registro encontrado!").build(), HttpStatus.NOT_FOUND);
 
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleException(MethodArgumentNotValidException ex) {
 
-		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(HttpStatus.BAD_REQUEST.value())
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder()
 				.timestamp(new Date())
 				.message("Campos obrigatórios: ["
 						+ ex.getFieldErrors().stream().map(e -> e.getField()).collect(Collectors.joining(", ")) + "]")
-				.build(), HttpStatus.BAD_REQUEST);
-
+				.build());
+				
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
@@ -100,20 +114,23 @@ public class TSServiceException {
 	@ExceptionHandler(EntityExistsException.class)
 	public ResponseEntity<Object> handleExceptionExists() {
 
-		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder().message("Já existe esse registro!"));
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message("Já existe esse registro!")
+				.build());
 
 	}
 
-	/*
-	 * @ExceptionHandler(DataIntegrityViolationException.class) public
-	 * ResponseEntity<?> handleDataIntegrityViolationException() {
-	 * 
-	 * return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder().
-	 * message("Já existe esse registro!"));
-	 * 
-	 * }
-	 * 
-	 */
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+    
+		ex.getBindingResult().getFieldErrors().forEach(error -> 
+            errors.put(error.getField(), error.getDefaultMessage())
+        );
+
+       return ResponseEntity.badRequest().body(errors);
+	}
 
 
 }

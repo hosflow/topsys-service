@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 public abstract class TSMainModel implements Serializable {
 
 	@EqualsAndHashCode.Include
+	@NotNull
 	protected Long id;
 
 	@EqualsAndHashCode.Include 
@@ -25,7 +27,7 @@ public abstract class TSMainModel implements Serializable {
 	
 	protected OffsetDateTime dataAtualizacao;
 	
-	protected Boolean flagAtivo; 	
+	protected Boolean flagAtivo = false; 	
 	
 	protected TSUserModel usuarioCadastroModel;	
 	
