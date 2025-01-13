@@ -96,7 +96,7 @@ public class TSServiceException {
 		StringBuilder builder = new StringBuilder();
 		
 		ex.getBindingResult().getFieldErrors().forEach(error -> 
-			builder.append(error.getField()).append(": ").append(error.getDefaultMessage())
+			builder.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("\n")
 		);
       
 
