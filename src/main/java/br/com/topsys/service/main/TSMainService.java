@@ -95,6 +95,8 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	@PutMapping
 	public T update(@RequestBody @Valid T model) {
+		
+		this.validField("id", model.getId());
 
 		this.validFieldsUpdate(model);
 

@@ -2,6 +2,7 @@ package br.com.topsys.service.jdbc;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -113,6 +114,18 @@ public abstract class TSJdbcRepository {
 		tsLog.begin();
 		try {
 			return this.getDAO().queryForList(sql, classe, args);
+		} catch (EmptyResultDataAccessException e) {
+			return Collections.emptyList();
+		} finally {
+			tsLog.end();
+		}
+	}
+	
+	public List<Map<String, Object>> queryForJson(String sql, Object... args){
+		TSLog tsLog = new TSLog(sql, args);
+		tsLog.begin();
+		try {
+			return this.getDAO().queryForList(sql,  args);
 		} catch (EmptyResultDataAccessException e) {
 			return Collections.emptyList();
 		} finally {

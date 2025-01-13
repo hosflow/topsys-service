@@ -1,8 +1,6 @@
 package br.com.topsys.service.exception;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -95,12 +93,16 @@ public class TSServiceException {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleException(MethodArgumentNotValidException ex) {
+		StringBuilder builder = new StringBuilder();
+		
+		ex.getBindingResult().getFieldErrors().forEach(error -> 
+			builder.append(error.getField()).append(": ").append(error.getDefaultMessage())
+		);
+      
 
 		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder()
 				.timestamp(new Date())
-				.message("Campos obrigatórios: ["
-						+ ex.getFieldErrors().stream().map(e -> e.getField()).collect(Collectors.joining(", ")) + "]")
-				.build());
+				.message(builder.toString()));
 				
 	}
 
