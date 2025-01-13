@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,7 +76,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@PostMapping
-	public T insert(@RequestBody T model) {
+	public T insert(@RequestBody @Valid T model) {
 
 		this.validFieldsInsert(model);
 
