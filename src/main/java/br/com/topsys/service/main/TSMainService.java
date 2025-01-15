@@ -184,12 +184,16 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	protected void injectAccessControl(TSMainModel model) {
-		
+
+		model.setControleAcesso(this.getTSAccessControlModel());
+	}
+	
+	protected TSAccessControlModel getTSAccessControlModel() {
 		Map<String, Object> claims = this.tokenService.getClaims();
+		
+		TSAccessControlModel controlModel = new TSAccessControlModel();
 
 		if(claims != null) {
-	
-			TSAccessControlModel controlModel = new TSAccessControlModel();
 		
 			if (!TSUtil.isEmpty(claims.get("origemId"))) {
 				controlModel.setOrigemId(((Integer) claims.get("origemId")).longValue());
@@ -202,11 +206,10 @@ public abstract class TSMainService<T extends TSMainModel> {
 			if (!TSUtil.isEmpty(claims.get("id"))) {
 				controlModel.setUsuarioId(((Integer) claims.get("id")).longValue());
 			}
-			
-			model.setControleAcesso(controlModel);
 
 		}
 		
+		return controlModel;
 	}
 
 	protected void validAutoComplete(String field, int min) {
