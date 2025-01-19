@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -29,44 +28,32 @@ public class TSTokenService {
 	@Value("${topsys.jwt.expiration}")
 	private String expiration;
 
+	@Value("${topsys.jwt.refresh.expiration}")
+	private String refreshExpiration;
+
 	@Value("${topsys.jwt.secret}")
 	private String secret;
-	
+
 	@Autowired
 	private HttpServletRequest httpRequest;
-
 
 	public String generateToken(Authentication authentication) {
 
 		TSSecurityModel model = (TSSecurityModel) authentication.getPrincipal();
 		try {
-			var algorithm = Algorithm.HMAC256(secret);
-
-			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(model.getLogin())
-					.withClaim("id", model.getId())
-					.withClaim("usuarioFuncaoId", model.getUsuarioFuncaoId())
-					.withClaim("origemId", model.getOrigemId())
-					.withClaim("token", model.getToken())
-					.withExpiresAt(expiracao(expiration)).sign(algorithm);
+			return generateToken(model);
 
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("Erro ao gerar o token jwt", exception);
 		}
 
 	}
-	
+
 	public String generateToken(TSSecurityModel securityModel) {
 
-		
 		try {
-			var algorithm = Algorithm.HMAC256(secret);
 
-			return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
-					.withClaim("id", securityModel.getId())
-					.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
-					.withClaim("origemId", securityModel.getOrigemId())
-					.withClaim("token", securityModel.getToken())
-					.withExpiresAt(expiracao(expiration)).sign(algorithm);
+			return generateToken(securityModel, expiracao(expiration));
 
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("Erro ao gerar o token jwt", exception);
@@ -74,19 +61,15 @@ public class TSTokenService {
 
 	}
 
-	/*
-	 * public String generateRefreshToken(Usuario usuario) { try {
-	 * 
-	 * var algorithm = Algorithm.HMAC256(SECRET);
-	 * 
-	 * return JWT.create() .withIssuer("TopSys IT Solutions")
-	 * .withSubject(model.getLogin()) .withClaim("id", model.getId())
-	 * .withClaim("origemId", model.getOrigemId()) .withClaim("token",
-	 * model.getToken()) .withExpiresAt(expiracao(expiration)) .sign(algorithm);
-	 * 
-	 * } catch (JWTCreationException exception){ throw new
-	 * RuntimeException("Erro ao gerar o refresh token jwt", exception); } }
-	 */
+	public String generateRefreshToken(TSSecurityModel securityModel) {
+		try {
+
+			return this.generateToken(securityModel, expiracao(refreshExpiration));
+
+		} catch (JWTCreationException exception) {
+			throw new RuntimeException("Erro ao gerar o refresh token jwt", exception);
+		}
+	}
 
 	public String getSubject(String tokenJwt) {
 		try {
@@ -97,51 +80,53 @@ public class TSTokenService {
 			throw new RuntimeException("Token JWT inválido ou expirado!", exception);
 		}
 	}
-	
+
 	public String getClaim(String tokenJwt, String claim) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(tokenJwt).getClaim(claim);
+			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(tokenJwt)
+					.getClaim(claim);
 
-			if(!claimAux.isNull()) {
+			if (!claimAux.isNull()) {
 				return claimAux.toString();
 			}
-			
+
 		} catch (JWTVerificationException exception) {
 			throw new RuntimeException("Token JWT inválido ou expirado!", exception);
 		}
-		
+
 		return null;
 	}
-	
+
 	public Map<String, Object> getClaims() {
 
-		if(TSUtil.isEmpty(this.expiration)) {
+		if (TSUtil.isEmpty(this.expiration)) {
 			return null;
 		}
 
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(this.getToken()).getClaims();
+			var claimAux = JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(this.getToken())
+					.getClaims();
 
 			Map<String, Object> map = new HashMap<>();
-			
+
 			for (Entry<String, Claim> entry : claimAux.entrySet()) {
 				map.put(entry.getKey(), entry.getValue().as(Object.class));
 			}
-			
+
 			return map;
-			
+
 		} catch (JWTVerificationException exception) {
 			throw new RuntimeException("Token JWT inválido ou expirado!", exception);
 		}
-		
+
 	}
-	
+
 	public String getClaim(String claim) {
 		return this.getClaim(this.getToken(), claim);
 	}
-	
+
 	public String getToken(HttpServletRequest request) {
 
 		var authorization = request.getHeader("Authorization");
@@ -154,34 +139,42 @@ public class TSTokenService {
 		return null;
 
 	}
-	
+
 	public String getToken() {
 
 		return getToken(httpRequest);
 
 	}
-	
-	
-	
+
 	public Boolean isTokenValid(String token) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
-		
+
 			JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(token);
-			
+
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
-	
-
 
 	private Instant expiracao(String minutes) {
-         
+
 		return LocalDateTime.now().plusMinutes(Integer.parseInt(minutes)).toInstant(ZoneOffset.of("-03:00"));
 	}
-	
 
+	private String generateToken(TSSecurityModel securityModel, Instant expiracao) {
+		var algorithm = Algorithm.HMAC256(secret);
+
+		return JWT.create()
+				.withIssuer("TopSys IT Solutions")
+				.withSubject(securityModel.getLogin())
+				.withClaim("id", securityModel.getId())
+				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
+				.withClaim("origemId", securityModel.getOrigemId())
+				.withClaim("token", securityModel.getToken())
+				.withExpiresAt(expiracao)
+				.sign(algorithm);
+	}
 
 }

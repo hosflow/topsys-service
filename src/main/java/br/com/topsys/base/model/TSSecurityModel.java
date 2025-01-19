@@ -14,6 +14,9 @@ public interface TSSecurityModel {
 	public void setToken(String token);
 	public String getToken();
 	
+	public void setRefreshToken(String token);
+	public String getRefreshToken();
+	
 	public void setSenha(String senha);
 	public String getSenha();
 	
