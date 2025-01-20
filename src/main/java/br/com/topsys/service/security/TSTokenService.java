@@ -17,14 +17,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import br.com.topsys.base.model.TSSecurityModel;
-import br.com.topsys.base.model.TSUserModel;
 import br.com.topsys.base.util.TSUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class TSTokenService {
+
+	private static final String FLAG_REFRESH_TOKEN = "flagRefreshToken";
 
 	@Value("${topsys.jwt.expiration}")
 	private String expiration;
@@ -68,12 +70,14 @@ public class TSTokenService {
 	public String generateRefreshToken(TSSecurityModel securityModel) {
 		try {
 
-			return this.generateToken(securityModel, expiracao(refreshExpiration));
+			return this.generateRefreshToken(securityModel, expiracao(refreshExpiration));
 
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("Erro ao gerar o refresh token jwt", exception);
 		}
 	}
+	
+	
 
 	public String getSubject(String tokenJwt) {
 		try {
@@ -152,14 +156,34 @@ public class TSTokenService {
 
 	public Boolean isTokenValid(String token) {
 		try {
-			Algorithm algorithm = Algorithm.HMAC256(secret);
 
-			JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(token);
+			var decode = this.validToken(token);
+
+			if(!decode.getClaim(FLAG_REFRESH_TOKEN).isMissing()) {
+				return false;
+			}
+			
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public Boolean isRefreshTokenValid(String token) {
+		try {
+			
+			validToken(token);
 
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	private DecodedJWT validToken(String token) {
+		Algorithm algorithm = Algorithm.HMAC256(secret);
+
+		return JWT.require(algorithm).withIssuer("TopSys IT Solutions").build().verify(token);
 	}
 
 	private Instant expiracao(String minutes) {
@@ -176,16 +200,46 @@ public class TSTokenService {
 				.withClaim("id", securityModel.getId())
 				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
 				.withClaim("origemId", securityModel.getOrigemId())
+				.withIssuedAt(Instant.now())
 				.withExpiresAt(expiracao)
+				.sign(algorithm);
+	}
+	
+	private String generateRefreshToken(TSSecurityModel securityModel, Instant expiracao) {
+		var algorithm = Algorithm.HMAC256(secret);
+
+		return JWT.create()
+				.withIssuer("TopSys IT Solutions")
+				.withSubject(securityModel.getLogin())
+				.withClaim("id", securityModel.getId())
+				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
+				.withClaim("origemId", securityModel.getOrigemId())
+				.withIssuedAt(Instant.now())
+				.withExpiresAt(expiracao)
+				.withClaim(FLAG_REFRESH_TOKEN, true)
 				.sign(algorithm);
 	}
 	
 	public void decoderToken(TSSecurityModel securityModel) {
 		
+		String id = this.getClaim(securityModel.getRefreshToken(), "id");
+		String origemId = this.getClaim(securityModel.getRefreshToken(), "origemId");
+		String usuarioFuncaoId = this.getClaim(securityModel.getRefreshToken(), "usuarioFuncaoId");
+		
 		securityModel.setLogin(this.getSubject(securityModel.getRefreshToken()));
-		securityModel.setId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "id")));
-		securityModel.setOrigemId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "origemId")));
-		securityModel.setUsuarioFuncaoId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "usuarioFuncaoId")));
+		
+		if(!TSUtil.isEmpty(id)) {
+			securityModel.setId(Long.valueOf(id));
+		}
+		
+		if(!TSUtil.isEmpty(origemId)) {
+			securityModel.setOrigemId(Long.valueOf(origemId));
+		}
+		
+		if(!TSUtil.isEmpty(usuarioFuncaoId)) {
+			securityModel.setUsuarioFuncaoId(Long.valueOf(usuarioFuncaoId));
+		}
+		
 		
 	}
 
