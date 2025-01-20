@@ -65,7 +65,6 @@ public class TSTokenService {
 	public String generateRefreshToken(TSSecurityModel securityModel) {
 		try {
 
-			this.decoderToken(securityModel);
 			return this.generateToken(securityModel, expiracao(refreshExpiration));
 
 		} catch (JWTCreationException exception) {
@@ -178,7 +177,7 @@ public class TSTokenService {
 				.sign(algorithm);
 	}
 	
-	private void decoderToken(TSSecurityModel securityModel) {
+	public void decoderToken(TSSecurityModel securityModel) {
 		
 		securityModel.setLogin(this.getSubject(securityModel.getRefreshToken()));
 		securityModel.setId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "id")));

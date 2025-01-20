@@ -31,6 +31,8 @@ public class TSAuthenticationService {
 	public TSSecurityModel refreshToken(TSSecurityModel model) {
 
 		if (model != null && this.tokenService.isTokenValid(model.getRefreshToken())) {
+			
+			this.tokenService.decoderToken(model);
 
 			this.authenticateToken(model);
 
