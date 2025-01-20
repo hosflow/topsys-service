@@ -48,9 +48,8 @@ public class TSAuthenticationService {
 
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-		String token = tokenService.generateToken(authenticationToken);
+		model  = tokenService.generateToken(authenticationToken);
 
-		model.setToken(token);
 	}
 
 }

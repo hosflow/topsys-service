@@ -38,15 +38,18 @@ public class TSTokenService {
 	@Autowired
 	private HttpServletRequest httpRequest;
 
-	public String generateToken(Authentication authentication) {
+	public TSSecurityModel generateToken(Authentication authentication) {
 
 		TSSecurityModel model = (TSSecurityModel) authentication.getPrincipal();
 		try {
-			return generateToken(model);
+			
+			model.setToken(generateToken(model));
 
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("Erro ao gerar o token jwt", exception);
 		}
+		
+		return model;
 
 	}
 
