@@ -19,6 +19,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 
 import br.com.topsys.base.model.TSSecurityModel;
+import br.com.topsys.base.model.TSUserModel;
 import br.com.topsys.base.util.TSUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -64,6 +65,7 @@ public class TSTokenService {
 	public String generateRefreshToken(TSSecurityModel securityModel) {
 		try {
 
+			this.decoderToken(securityModel);
 			return this.generateToken(securityModel, expiracao(refreshExpiration));
 
 		} catch (JWTCreationException exception) {
@@ -172,9 +174,17 @@ public class TSTokenService {
 				.withClaim("id", securityModel.getId())
 				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
 				.withClaim("origemId", securityModel.getOrigemId())
-				.withClaim("token", securityModel.getToken())
 				.withExpiresAt(expiracao)
 				.sign(algorithm);
+	}
+	
+	private void decoderToken(TSSecurityModel securityModel) {
+		
+		securityModel.setLogin(this.getSubject(securityModel.getRefreshToken()));
+		securityModel.setId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "id")));
+		securityModel.setOrigemId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "origemId")));
+		securityModel.setUsuarioFuncaoId(Long.valueOf(this.getClaim(securityModel.getRefreshToken(), "usuarioFuncaoId")));
+		
 	}
 
 }
