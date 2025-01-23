@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
@@ -55,8 +56,8 @@ public class TSServiceException {
 	}
 	
 	
-	@ExceptionHandler(JWTVerificationException.class)
-	public ResponseEntity<Object> handleException(JWTVerificationException ex) {
+	@ExceptionHandler(TokenExpiredException.class)
+	public ResponseEntity<Object> handleException(TokenExpiredException ex) {
 
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED) 
 				.body(TSResponseExceptionModel.builder()

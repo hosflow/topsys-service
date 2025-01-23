@@ -19,6 +19,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSSecurityModel;
 import br.com.topsys.base.util.TSUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,13 +45,13 @@ public class TSTokenService {
 
 		TSSecurityModel model = (TSSecurityModel) authentication.getPrincipal();
 		try {
-			
+
 			model.setToken(generateToken(model));
 
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("Erro ao gerar o token jwt", exception);
 		}
-		
+
 		return model;
 
 	}
@@ -76,8 +77,6 @@ public class TSTokenService {
 			throw new RuntimeException("Erro ao gerar o refresh token jwt", exception);
 		}
 	}
-	
-	
 
 	public String getSubject(String tokenJwt) {
 		try {
@@ -154,24 +153,19 @@ public class TSTokenService {
 
 	}
 
-	public Boolean isTokenValid(String token) {
-		try {
+	public void isTokenValid(String token) {
 
-			var decode = this.validToken(token);
+		var decode = this.validToken(token);
 
-			if(!decode.getClaim(FLAG_REFRESH_TOKEN).isMissing()) {
-				return false;
-			}
-			
-			return true;
-		} catch (Exception e) {
-			return false;
+		if (!decode.getClaim(FLAG_REFRESH_TOKEN).isMissing()) {
+			throw new TSSystemException("Token inválido!");
 		}
+
 	}
-	
+
 	public Boolean isRefreshTokenValid(String token) {
 		try {
-			
+
 			validToken(token);
 
 			return true;
@@ -194,53 +188,41 @@ public class TSTokenService {
 	private String generateToken(TSSecurityModel securityModel, Instant expiracao) {
 		var algorithm = Algorithm.HMAC256(secret);
 
-		return JWT.create()
-				.withIssuer("TopSys IT Solutions")
-				.withSubject(securityModel.getLogin())
-				.withClaim("id", securityModel.getId())
-				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
-				.withClaim("origemId", securityModel.getOrigemId())
-				.withIssuedAt(Instant.now())
-				.withExpiresAt(expiracao)
+		return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
+				.withClaim("id", securityModel.getId()).withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
+				.withClaim("origemId", securityModel.getOrigemId()).withIssuedAt(Instant.now()).withExpiresAt(expiracao)
 				.sign(algorithm);
 	}
-	
+
 	private String generateRefreshToken(TSSecurityModel securityModel, Instant expiracao) {
 		var algorithm = Algorithm.HMAC256(secret);
 
-		return JWT.create()
-				.withIssuer("TopSys IT Solutions")
-				.withSubject(securityModel.getLogin())
-				.withClaim("id", securityModel.getId())
-				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
-				.withClaim("origemId", securityModel.getOrigemId())
-				.withIssuedAt(Instant.now())
-				.withExpiresAt(expiracao)
-				.withClaim(FLAG_REFRESH_TOKEN, true)
-				.sign(algorithm);
+		return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
+				.withClaim("id", securityModel.getId()).withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
+				.withClaim("origemId", securityModel.getOrigemId()).withIssuedAt(Instant.now()).withExpiresAt(expiracao)
+				.withClaim(FLAG_REFRESH_TOKEN, true).sign(algorithm);
 	}
-	
+
 	public void decoderToken(TSSecurityModel securityModel) {
-		
+
 		String id = this.getClaim(securityModel.getRefreshToken(), "id");
 		String origemId = this.getClaim(securityModel.getRefreshToken(), "origemId");
 		String usuarioFuncaoId = this.getClaim(securityModel.getRefreshToken(), "usuarioFuncaoId");
-		
+
 		securityModel.setLogin(this.getSubject(securityModel.getRefreshToken()));
-		
-		if(!TSUtil.isEmpty(id)) {
+
+		if (!TSUtil.isEmpty(id)) {
 			securityModel.setId(Long.valueOf(id));
 		}
-		
-		if(!TSUtil.isEmpty(origemId)) {
+
+		if (!TSUtil.isEmpty(origemId)) {
 			securityModel.setOrigemId(Long.valueOf(origemId));
 		}
-		
-		if(!TSUtil.isEmpty(usuarioFuncaoId)) {
+
+		if (!TSUtil.isEmpty(usuarioFuncaoId)) {
 			securityModel.setUsuarioFuncaoId(Long.valueOf(usuarioFuncaoId));
 		}
-		
-		
+
 	}
 
 }

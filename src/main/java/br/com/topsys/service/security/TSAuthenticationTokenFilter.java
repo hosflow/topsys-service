@@ -28,8 +28,10 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 
 		var token = tokenService.getToken(request);
 
-		if (this.tokenService.isTokenValid(token).booleanValue()) {
-			authenticateWithToken(token);
+		if (token != null) {
+			this.tokenService.isTokenValid(token);
+
+			this.authenticateWithToken(token);
 		}
 
 		filterChain.doFilter(request, response);
@@ -47,7 +49,5 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 		}
 
 	}
-
-	
 
 }
