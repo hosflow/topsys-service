@@ -7,11 +7,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
@@ -50,6 +53,21 @@ public class TSServiceException {
 				.build());
 
 	}
+	
+	
+	@ExceptionHandler(JWTVerificationException.class)
+	public ResponseEntity<Object> handleException(JWTVerificationException ex) {
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED) 
+				.body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message("Token expirado ou inválido!")
+				.trace(ex.getMessage())
+				.build());
+
+	}
+	
+	
 
 	@ExceptionHandler(TSApplicationException.class)
 	public ResponseEntity<Object> handleException(TSApplicationException ex) {
