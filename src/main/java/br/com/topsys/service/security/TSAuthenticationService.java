@@ -43,7 +43,11 @@ public class TSAuthenticationService {
 			
 			this.tokenService.decoderToken(model);
 			
-			return this.authenticate(model);
+			model.setToken(tokenService.generateToken(model));
+			
+			model.setRefreshToken(tokenService.generateRefreshToken(model));
+			
+			return model;
 
 		}
 
