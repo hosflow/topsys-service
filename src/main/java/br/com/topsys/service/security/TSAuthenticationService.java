@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.topsys.base.model.TSSecurityModel;
@@ -20,16 +19,21 @@ public class TSAuthenticationService {
 
 	public TSSecurityModel authenticate(TSSecurityModel model) {
 
+		TSSecurityModel modelAux = null;
+		
 		if (model != null) {
 
-			model = authenticateToken(model);
+			modelAux = authenticateToken(model);
 
-			String refreshToken = tokenService.generateRefreshToken(model);
-			model.setRefreshToken(refreshToken);
-
+			String refreshToken = tokenService.generateRefreshToken(modelAux);
+			
+			modelAux.setOrigemId(model.getOrigemId());
+			modelAux.setSenha(null);
+			modelAux.setRefreshToken(refreshToken);
+			
 		}
 
-		return model;
+		return modelAux;
 
 	}
 
