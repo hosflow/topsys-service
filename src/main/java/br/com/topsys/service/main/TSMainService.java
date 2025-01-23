@@ -33,7 +33,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	private TSTokenService tokenService;
 
 	@GetMapping(value = "/{id}")
-	public T get(@PathVariable(required = true) Long id) {
+	public T get(@PathVariable(required = true, name = "id") Long id) {
 
 		return this.getRepository().get(id);
 	}
@@ -45,7 +45,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@GetMapping(value = Endpoint.GET_HISTORY)
-	public T getHistory(@PathVariable(required = true) Long id) {
+	public T getHistory(@PathVariable(required = true, name = "id") Long id) {
 
 		return this.getRepository().getHistory(id);
 	}
@@ -112,7 +112,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public T delete(@PathVariable(required = true) Long id) {
+	public T delete(@PathVariable(required = true, name = "id") Long id) {
 		T model; 
 	
 		try {
