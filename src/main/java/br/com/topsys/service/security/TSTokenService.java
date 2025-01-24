@@ -146,6 +146,12 @@ public class TSTokenService {
 		return null;
 
 	}
+	
+	public String getRefreshToken(HttpServletRequest request) {
+
+		return request.getHeader("refreshToken");
+
+	}
 
 	public String getToken() {
 

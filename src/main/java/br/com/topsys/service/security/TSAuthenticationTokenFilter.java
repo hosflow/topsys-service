@@ -27,14 +27,29 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		var token = tokenService.getToken(request);
+		var refreshToken = tokenService.getRefreshToken(request);
+		
 
-		if (token != null) {
-			this.tokenService.isTokenValid(token);
+		try {
 
-			this.authenticateWithToken(token);
+			if(request.getRequestURI().contains("refresh-token")) {
+				
+				this.authenticateWithToken(refreshToken);
+				
+			}else if (token != null) {
+
+				this.tokenService.isTokenValid(token);
+				this.authenticateWithToken(token);
+
+			}
+
+			filterChain.doFilter(request, response);
+			
+		} catch (Exception e) {
+			handleException(response, e);
 		}
 
-		filterChain.doFilter(request, response);
+		
 
 	}
 
@@ -48,6 +63,13 @@ public class TSAuthenticationTokenFilter extends OncePerRequestFilter {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 
+	}
+
+	private void handleException(HttpServletResponse response, Exception ex) throws IOException {
+
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setContentType("application/json");
+		response.getWriter().write("{\"error\": \"" + ex.getMessage() + "\"}");
 	}
 
 }

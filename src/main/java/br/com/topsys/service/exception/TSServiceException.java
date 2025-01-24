@@ -1,23 +1,22 @@
 package br.com.topsys.service.exception;
 
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import br.com.topsys.base.exception.TSApplicationException;
+import br.com.topsys.base.exception.TSSystemException;
 import br.com.topsys.base.model.TSResponseExceptionModel;
 import br.com.topsys.base.util.TSType;
 import jakarta.persistence.EntityExistsException;
@@ -29,6 +28,7 @@ public class TSServiceException {
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
+	/*
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleException(Exception ex) {
 
@@ -42,9 +42,11 @@ public class TSServiceException {
 
 	}
 	
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<Object> handleException(RuntimeException ex) {
-
+	*/
+	
+	@ExceptionHandler({TSSystemException.class, RuntimeException.class, Exception.class})
+	public ResponseEntity<Object> handleException(Exception ex) {
+        System.out.println("foi na exception");
 		ex.printStackTrace();
  
 		return ResponseEntity.internalServerError().body(TSResponseExceptionModel.builder()
@@ -141,6 +143,17 @@ public class TSServiceException {
 				.build());
 
 	}
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<Object> handleException(BadCredentialsException ex) {
+
+		return ResponseEntity.badRequest().body(TSResponseExceptionModel.builder()
+				.timestamp(new Date())
+				.message("Usuário ou senha não confere!")
+				.build());
+
+	}
+	
 
 }
  
