@@ -28,25 +28,11 @@ public class TSServiceException {
 
 	private static final String ERRO_INTERNO = "Ocorreu um erro interno, entre em contato com a TI!";
 
-	/*
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleException(Exception ex) {
-
-		ex.printStackTrace();
- 
-		return ResponseEntity.internalServerError().body(TSResponseExceptionModel.builder()
-				.timestamp(new Date())
-				.message(ERRO_INTERNO)
-				.trace(ex.getMessage())
-				.build());
-
-	}
 	
-	*/
 	
 	@ExceptionHandler({TSSystemException.class, RuntimeException.class, Exception.class})
 	public ResponseEntity<Object> handleException(Exception ex) {
-        System.out.println("foi na exception");
+       
 		ex.printStackTrace();
  
 		return ResponseEntity.internalServerError().body(TSResponseExceptionModel.builder()

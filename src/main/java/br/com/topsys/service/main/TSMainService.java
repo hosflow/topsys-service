@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,10 +93,12 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	@PutMapping
-	public T update(@RequestBody @Valid T model) {
+	@PutMapping(value = "/{id}")
+	public T update(@PathVariable(name = "id", required = true) Long id, @RequestBody @Valid T model) {
 		
-		this.validField("id", model.getId());
+		this.validField("id", id);
+		
+		model.setId(id);
 
 		this.validFieldsUpdate(model);
 
@@ -106,8 +109,14 @@ public abstract class TSMainService<T extends TSMainModel> {
 		this.updateBusinessRule(model);
 
 		model.setDataAtualizacao(OffsetDateTime.now());
-
-		return this.getRepository().update(model);
+		
+		T modelUpdated = this.getRepository().update(model);
+		
+		if(this.getRepository().get(model.getId()) == null){
+			throw new EmptyResultDataAccessException(0);
+		}
+		
+		return modelUpdated;
 
 	}
 
