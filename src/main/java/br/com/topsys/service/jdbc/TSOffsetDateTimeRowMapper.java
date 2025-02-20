@@ -12,7 +12,12 @@ public class TSOffsetDateTimeRowMapper implements RowMapper<OffsetDateTime> {
 	@SuppressWarnings("null")
     @Override
     public OffsetDateTime mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return rs.getObject(rowNum + 1, OffsetDateTime.class)
+		
+		if(rs.getObject(rowNum + 1) == null) {
+			return null;
+		}
+		
+		return rs.getObject(rowNum + 1, OffsetDateTime.class)
                  .withOffsetSameInstant(ZoneId.of("America/Sao_Paulo").getRules().getOffset(rs.getTimestamp(rowNum + 1).toInstant()));
     }
 
