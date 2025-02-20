@@ -3,26 +3,26 @@ package br.com.topsys.base.model;
 public interface TSSecurityModel {
 	
 	
-	public void setId(Long id);
-	public Long getId();
+	default void setId(Long id) {}
+	default Long getId() {return null;}
 	
-	public void setUsuarioFuncaoId(Long id);
-	public Long getUsuarioFuncaoId();
+	default void setUsuarioFuncaoId(Long id) {};
+	default Long getUsuarioFuncaoId() {return null;}
 	
-	public void setOrigemId(Long id);
-	public Long getOrigemId();
+	default void setOrigemId(Long id) {};
+	default Long getOrigemId(){return null;}
 	
-	public void setLogin(String login);
-	public String getLogin();
+	default void setLogin(String login) {};
+	default String getLogin(){return null;}
 	
-	public void setToken(String token);
-	public String getToken();
+	default void setToken(String token) {};
+	default String getToken(){return null;}
 	
-	public void setRefreshToken(String token);
-	public String getRefreshToken();
+	default void setRefreshToken(String token) {};
+	default String getRefreshToken(){return null;}
 	
-	public void setSenha(String senha);
-	public String getSenha();
+	default void setSenha(String senha) {};
+	default String getSenha(){return null;}
 	
 	
 	
