@@ -29,7 +29,7 @@ public abstract class TSJdbcRepository {
 
 	private JdbcTemplate getDAO() {
 
-		if (!TSUtil.isEmpty(this.maxRows)) {
+		if (!TSUtil.isEmpty(this.maxRows) && TSUtil.isNumeric(this.maxRows) ) {
 			this.dao.setMaxRows(TSParseUtil.stringToInteger(this.maxRows));
 		}
 
