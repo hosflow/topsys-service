@@ -21,7 +21,6 @@ import lombok.Data;
 @Data
 public abstract class TSJdbcRepository {
 
-	
 	private JdbcTemplate dao = new JdbcTemplate();
 
 	@Value("${topsys.jdbc.maxrows}")
@@ -29,7 +28,7 @@ public abstract class TSJdbcRepository {
 
 	private JdbcTemplate getDAO() {
 
-		if (!TSUtil.isEmpty(this.maxRows) && TSUtil.isNumeric(this.maxRows) ) {
+		if (!TSUtil.isEmpty(this.maxRows) && TSUtil.isNumeric(this.maxRows)) {
 			this.dao.setMaxRows(TSParseUtil.stringToInteger(this.maxRows));
 		}
 
@@ -120,12 +119,12 @@ public abstract class TSJdbcRepository {
 			tsLog.end();
 		}
 	}
-	
-	public List<Map<String, Object>> queryForJson(String sql, Object... args){
+
+	public List<Map<String, Object>> queryForJson(String sql, Object... args) {
 		TSLog tsLog = new TSLog(sql, args);
 		tsLog.begin();
 		try {
-			return this.getDAO().queryForList(sql,  args);
+			return this.getDAO().queryForList(sql, args);
 		} catch (EmptyResultDataAccessException e) {
 			return Collections.emptyList();
 		} finally {

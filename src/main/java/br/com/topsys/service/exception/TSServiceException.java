@@ -61,7 +61,7 @@ public class TSServiceException {
 	@ExceptionHandler(TSApplicationException.class)
 	public ResponseEntity<Object> handleException(TSApplicationException ex) {
 
-		HttpStatus type = ex.getTSType().equals(TSType.BUSINESS) ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+		HttpStatus type = ex.getTSType().equals(TSType.BUSINESS) ? HttpStatus.UNPROCESSABLE_ENTITY : HttpStatus.BAD_REQUEST;
 
 		return new ResponseEntity<>(TSResponseExceptionModel.builder().status(type.value()).timestamp(new Date())
 				.message(ex.getMessage()).build(), type);

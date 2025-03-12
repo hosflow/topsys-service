@@ -62,9 +62,10 @@ public final class TSParseUtil {
 
 	public static Integer stringToInteger(String valor) {
 		Integer it = null;
+		
 		try {
 			if (valor != null) {
-				it = numFormat.parse(valor).intValue();
+				it = Integer.valueOf(valor);
 			}
 		} catch (Exception e) {
 		}
@@ -75,7 +76,7 @@ public final class TSParseUtil {
 		Long it = null;
 		try {
 			if (valor != null) {
-				it = numFormat.parse(valor).longValue();
+				it = Long.valueOf(valor);
 			}
 		} catch (Exception e) {
 		}
