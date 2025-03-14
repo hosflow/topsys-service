@@ -198,6 +198,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 	}
 	
 	protected TSAccessControlModel getTSAccessControlModel() {
+		
 		Map<String, Object> claims = this.tokenService.getClaims();
 		
 		TSAccessControlModel controlModel = new TSAccessControlModel();
@@ -214,6 +215,10 @@ public abstract class TSMainService<T extends TSMainModel> {
 	
 			if (!TSUtil.isEmpty(claims.get("id"))) {
 				controlModel.setUsuarioId(((Integer) claims.get("id")).longValue());
+			}
+			
+			if (!TSUtil.isEmpty(claims.get("flagAdministrador"))) {
+				controlModel.setFlagAdministrador(((Boolean) claims.get("flagAdministrador")).booleanValue());
 			}
 
 		}
