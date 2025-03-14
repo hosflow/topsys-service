@@ -199,7 +199,7 @@ public class TSTokenService {
 				.withClaim("id", securityModel.getId())
 				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
 				.withClaim("origemId", securityModel.getOrigemId())
-				.withClaim("flagAdministrador", securityModel.getFlagAdministrador())
+				.withClaim("isFlagAdministrador", securityModel.isFlagAdministrador())
 				.withIssuedAt(Instant.now()).withExpiresAt(expiracao)
 				.sign(algorithm);
 	}
@@ -212,7 +212,7 @@ public class TSTokenService {
 				.withClaim("id", securityModel.getId())
 				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
 				.withClaim("origemId", securityModel.getOrigemId())
-				.withClaim("flagAdministrador", securityModel.getFlagAdministrador())
+				.withClaim("isFlagAdministrador", securityModel.isFlagAdministrador())
 				.withIssuedAt(Instant.now()).withExpiresAt(expiracao)
 				.withClaim(FLAG_REFRESH_TOKEN, true).sign(algorithm);
 	}
@@ -222,7 +222,7 @@ public class TSTokenService {
 		String id = this.getClaim(securityModel.getRefreshToken(), "id");
 		String origemId = this.getClaim(securityModel.getRefreshToken(), "origemId");
 		String usuarioFuncaoId = this.getClaim(securityModel.getRefreshToken(), "usuarioFuncaoId");
-		boolean flagAdministrador = Boolean.parseBoolean(this.getClaim(securityModel.getRefreshToken(), "flagAdministrador"));
+		boolean flagAdministrador = Boolean.parseBoolean(this.getClaim(securityModel.getRefreshToken(), "isFlagAdministrador"));
 
 		securityModel.setLogin(this.getSubject(securityModel.getRefreshToken()));
 
