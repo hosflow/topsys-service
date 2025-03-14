@@ -24,6 +24,9 @@ public interface TSSecurityModel {
 	default void setSenha(String senha) {};
 	default String getSenha(){return null;}
 	
+	default void setFlagAdministrador(boolean flag) {};
+	default boolean getFlagAdministrador(){return false;}
+	
 	
 	
 

@@ -194,18 +194,26 @@ public class TSTokenService {
 	private String generateToken(TSSecurityModel securityModel, Instant expiracao) {
 		var algorithm = Algorithm.HMAC256(secret);
 
-		return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
-				.withClaim("id", securityModel.getId()).withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
-				.withClaim("origemId", securityModel.getOrigemId()).withIssuedAt(Instant.now()).withExpiresAt(expiracao)
+		return JWT.create().withIssuer("TopSys IT Solutions")
+				.withSubject(securityModel.getLogin())
+				.withClaim("id", securityModel.getId())
+				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
+				.withClaim("origemId", securityModel.getOrigemId())
+				.withClaim("flagAdministrador", securityModel.getFlagAdministrador())
+				.withIssuedAt(Instant.now()).withExpiresAt(expiracao)
 				.sign(algorithm);
 	}
 
 	private String generateRefreshToken(TSSecurityModel securityModel, Instant expiracao) {
 		var algorithm = Algorithm.HMAC256(secret);
 
-		return JWT.create().withIssuer("TopSys IT Solutions").withSubject(securityModel.getLogin())
-				.withClaim("id", securityModel.getId()).withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
-				.withClaim("origemId", securityModel.getOrigemId()).withIssuedAt(Instant.now()).withExpiresAt(expiracao)
+		return JWT.create().withIssuer("TopSys IT Solutions")
+				.withSubject(securityModel.getLogin())
+				.withClaim("id", securityModel.getId())
+				.withClaim("usuarioFuncaoId", securityModel.getUsuarioFuncaoId())
+				.withClaim("origemId", securityModel.getOrigemId())
+				.withClaim("flagAdministrador", securityModel.getFlagAdministrador())
+				.withIssuedAt(Instant.now()).withExpiresAt(expiracao)
 				.withClaim(FLAG_REFRESH_TOKEN, true).sign(algorithm);
 	}
 
@@ -214,6 +222,7 @@ public class TSTokenService {
 		String id = this.getClaim(securityModel.getRefreshToken(), "id");
 		String origemId = this.getClaim(securityModel.getRefreshToken(), "origemId");
 		String usuarioFuncaoId = this.getClaim(securityModel.getRefreshToken(), "usuarioFuncaoId");
+		boolean flagAdministrador = Boolean.parseBoolean(this.getClaim(securityModel.getRefreshToken(), "flagAdministrador"));
 
 		securityModel.setLogin(this.getSubject(securityModel.getRefreshToken()));
 
@@ -227,6 +236,10 @@ public class TSTokenService {
 
 		if (!TSUtil.isEmpty(usuarioFuncaoId)) {
 			securityModel.setUsuarioFuncaoId(Long.valueOf(usuarioFuncaoId));
+		}
+		
+		if(flagAdministrador) {
+			securityModel.setFlagAdministrador(flagAdministrador);
 		}
 
 	}
