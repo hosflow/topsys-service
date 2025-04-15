@@ -5,6 +5,8 @@ import javax.sql.DataSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Component;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 @Component
 public class TSJdbcTemplate extends TSJdbcRepository {
 
@@ -15,15 +17,13 @@ public class TSJdbcTemplate extends TSJdbcRepository {
 	
 	
 	
-	public static TSJdbcTemplate createTSJdbcTemplate(String url, String userName, String password) {
-		DataSource dataSource = DataSourceBuilder.create()
+	public static HikariDataSource createTSJdbcTemplate(String url, String userName, String password) {
+		return DataSourceBuilder.create()
+				.type(HikariDataSource.class)
 				.url(url)
 				.username(userName)
 				.password(password)
 				.driverClassName("org.postgresql.Driver")
 				.build();
-		 return new TSJdbcTemplate(dataSource);
-		
-
 	}
 }
