@@ -299,5 +299,13 @@ public final class TSUtil {
 	public static boolean isEmptyId(TSMainModel model) {
 		return model == null ? true : model.getId() == null;
 	}
+	
+	public static String getLikeString(String campo, boolean percentDuplo) {
+		return campo == null ? null : percentDuplo ? "%" + campo.trim() + "%" : campo.trim() + "%";
+	}
+    
+	public static Long extrairId(TSMainModel model) {
+		return model == null ? null : model.getId();
+	}
 
 }

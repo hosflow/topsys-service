@@ -13,7 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import br.com.topsys.base.exception.TSApplicationException;
 import br.com.topsys.base.exception.TSSystemException;
@@ -44,6 +43,7 @@ public class TSServiceException {
 	}
 	
 	
+	/*
 	@ExceptionHandler(TokenExpiredException.class)
 	public ResponseEntity<Object> handleException(TokenExpiredException ex) {
 
@@ -55,6 +55,7 @@ public class TSServiceException {
 				.build());
 
 	}
+	*/
 	
 	
 
