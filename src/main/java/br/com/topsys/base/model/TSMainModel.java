@@ -2,6 +2,8 @@ package br.com.topsys.base.model;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import lombok.Data;
@@ -34,6 +36,15 @@ public abstract class TSMainModel implements Serializable {
 	protected TSUsuarioFuncaoModel usuarioFuncaoCadastroModel;
 
 	protected TSUsuarioFuncaoModel usuarioFuncaoAtualizacaoModel;
+	
+	public String getDataCadastroFormatada() {
+		return this.dataCadastro != null ? this.dataCadastro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault())) : "";
+	}
+	
+	public String getDataAtualizacaoFormatada() {
+		return this.dataAtualizacao != null ? this.dataAtualizacao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault())) : "";
+	}
+
 	
 	
 
