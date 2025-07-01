@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.topsys.base.model.TSMainModel;
+
 public final class TSUtil {
 
 	private static final int[] PESO_CPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -288,6 +290,14 @@ public final class TSUtil {
 
 		return TSUtil.isNotEmpty(valor) ? valor.trim().replace("  ", " ") : null;
 
+	}
+	
+	public static boolean isTrue(Boolean flag) {
+		return flag != null ? flag : false;
+	}
+    
+	public static boolean isEmptyId(TSMainModel model) {
+		return model == null ? true : model.getId() == null;
 	}
 
 }

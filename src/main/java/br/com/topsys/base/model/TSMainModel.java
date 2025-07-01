@@ -7,10 +7,12 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
+@ToString(of = "id")
 public abstract class TSMainModel implements Serializable {
 
 	@EqualsAndHashCode.Include
@@ -19,7 +21,7 @@ public abstract class TSMainModel implements Serializable {
 	@EqualsAndHashCode.Include 
 	protected Long idHistorico;
 
-	protected TSAccessControlModel controleAcesso;
+	protected TSAccessControlModel accessControlModel;
 	
 	protected OffsetDateTime dataCadastro; 
 	
@@ -27,11 +29,11 @@ public abstract class TSMainModel implements Serializable {
 	
 	protected Boolean flagAtivo; 	
 	
-	protected TSUserModel usuarioCadastroModel;	
-	
-	protected TSUserModel usuarioAtualizacaoModel;
-	
 	protected List<TSMessageModel> messages;
+	
+	protected TSUsuarioFuncaoModel usuarioFuncaoCadastroModel;
+
+	protected TSUsuarioFuncaoModel usuarioFuncaoAtualizacaoModel;
 	
 	
 

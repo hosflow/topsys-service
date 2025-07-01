@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TSUserModel extends TSMainModel {
+public class TSUsuarioModel extends TSMainModel {
 	
 	public String nome;
 	public String login;

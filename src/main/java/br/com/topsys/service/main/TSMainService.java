@@ -194,7 +194,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	protected void injectAccessControl(TSMainModel model) {
 
-		model.setControleAcesso(this.getTSAccessControlModel());
+		model.setAccessControlModel(this.getTSAccessControlModel());
 	}
 	
 	protected TSAccessControlModel getTSAccessControlModel() {

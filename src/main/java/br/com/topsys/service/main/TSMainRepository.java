@@ -44,7 +44,7 @@ public abstract class TSMainRepository<T extends TSMainModel>  {
 		if (size > 0) {
 			query.append(" LIMIT ? OFFSET ? ");
 			params.add(size);
-			params.add((page - 1) * size);
+			params.add(page * size);
 		}
 			
 		return this.jdbcTemplate.query(query.toString(), new TSModelRowMapper<T>(type, columns.toArray(new String[]{})), params.toArray());
