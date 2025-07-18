@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import br.com.topsys.base.exception.TSApplicationException;
+import br.com.topsys.base.exception.TSSystemException;
 
 @Aspect
 @Component
@@ -24,6 +25,10 @@ public class TSAspectServiceException {
 			
 		} catch (TSApplicationException ex) {
 			
+			throw ex;
+
+		}catch (TSSystemException ex) {
+				
 			throw ex;
 
 		} catch (Exception ex) {
@@ -59,6 +64,8 @@ public class TSAspectServiceException {
 
 			throw new TSApplicationException(builder.toString(), ex);
 
+		}else {
+			throw new TSSystemException(ex);
 		}
 	}
 
