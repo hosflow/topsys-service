@@ -29,6 +29,8 @@ public abstract class TSMainModel implements Serializable {
 	
 	protected OffsetDateTime dataAtualizacao;
 	
+	protected OffsetDateTime dataOperacao;
+	
 	protected Boolean flagAtivo; 	
 	
 	protected List<TSMessageModel> messages;
