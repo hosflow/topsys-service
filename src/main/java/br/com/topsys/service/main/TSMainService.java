@@ -58,7 +58,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.insertBusinessRule(model);
 
-		model.setDataCadastro(OffsetDateTime.now());
+		model.setDataOperacao(OffsetDateTime.now());
 
 		return this.getRepository().insert(model);
 
