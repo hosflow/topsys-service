@@ -72,7 +72,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.updateBusinessRule(model);
 
-		model.setDataAtualizacao(OffsetDateTime.now());
+		model.setDataOperacao(OffsetDateTime.now());
 
 		return this.getRepository().update(model);
 
@@ -82,7 +82,7 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.deleteBusinessRule(model);
 
-		model.setDataAtualizacao(OffsetDateTime.now());
+		model.setDataOperacao(OffsetDateTime.now());
 
 		return this.getRepository().delete(model);
 
