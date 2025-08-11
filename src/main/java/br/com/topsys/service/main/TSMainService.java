@@ -58,8 +58,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.insertBusinessRule(model);
 
-		model.setDataOperacao(OffsetDateTime.now());
-
 		return this.getRepository().insert(model);
 
 	}
@@ -72,8 +70,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 		this.updateBusinessRule(model);
 
-		model.setDataOperacao(OffsetDateTime.now());
-
 		return this.getRepository().update(model);
 
 	}
@@ -81,8 +77,6 @@ public abstract class TSMainService<T extends TSMainModel> {
 	public T delete(T model) {
 
 		this.deleteBusinessRule(model);
-
-		model.setDataOperacao(OffsetDateTime.now());
 
 		return this.getRepository().delete(model);
 

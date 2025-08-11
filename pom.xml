@@ -17,7 +17,7 @@
 		<version>3.5.4</version>  
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-  
+   
 	<properties>    
 
 		<java.version>23</java.version>
