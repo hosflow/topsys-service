@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.topsys</groupId>
 	<artifactId>topsys-service</artifactId> 
-	<version>3.1</version>
+	<version>3.1.1</version>
 	<name>TopSys IT Solutions - SERVICE</name>
  
  
@@ -24,7 +24,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<beanutils.version>1.9.4</beanutils.version>
-		<topsys.version>3.1</topsys.version>
+		<topsys.version>3.1.1</topsys.version>
 
 
 	</properties>

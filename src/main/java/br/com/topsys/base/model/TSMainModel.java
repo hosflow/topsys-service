@@ -39,6 +39,10 @@ public abstract class TSMainModel implements Serializable {
 
 	protected TSUsuarioFuncaoModel usuarioFuncaoAtualizacaoModel;
 	
+	public TSMainModel(Long id) {
+		this.setId(id);
+	}
+	
 	public String getDataCadastroFormatada() {
 		return this.dataCadastro != null ? this.dataCadastro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault())) : "";
 	}
