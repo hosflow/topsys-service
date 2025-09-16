@@ -84,7 +84,7 @@ public abstract class TSMainRepository<T extends TSMainModel>  {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 
-    public T delete(T model) {
+    public void delete(T model) {
 		throw new TSSystemException(NOT_IMPLEMENTED);
 	}
 }

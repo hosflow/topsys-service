@@ -74,11 +74,11 @@ public abstract class TSMainService<T extends TSMainModel> {
 
 	}
 
-	public T delete(T model) {
+	public void delete(T model) {
 
 		this.deleteBusinessRule(model);
 
-		return this.getRepository().delete(model);
+		this.getRepository().delete(model);
 
 	}
 

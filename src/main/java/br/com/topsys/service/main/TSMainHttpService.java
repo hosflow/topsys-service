@@ -121,7 +121,7 @@ public abstract class TSMainHttpService<T extends TSMainModel> {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public T delete(@PathVariable(required = true, name = "id") Long id) {
+	public void delete(@PathVariable(required = true, name = "id") Long id) {
 		T model; 
 	
 		try {
@@ -145,7 +145,7 @@ public abstract class TSMainHttpService<T extends TSMainModel> {
 
 		model.setDataAtualizacao(OffsetDateTime.now());
 
-		return this.getRepository().delete(model);
+		this.getRepository().delete(model);
 
 	}
 
