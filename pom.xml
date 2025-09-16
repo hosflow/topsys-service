@@ -165,8 +165,8 @@
 	<distributionManagement>
     <repository>
         <id>hosflow</id>
-        <name>hosflow</name>
-        <url>https://maven.pkg.github.com/hosflow/topsys-service.git</url>
+        <name>GitHub Hosflow Packages</name>
+        <url>https://maven.pkg.github.com/hosflow/topsys-service</url>
     </repository>
 </distributionManagement>
 
